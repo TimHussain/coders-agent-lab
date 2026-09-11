@@ -1,0 +1,23 @@
+name: coders-agent-lab
+services:
+  db:
+    build:
+      context: .
+      dockerfile: db/Dockerfile
+    environment:
+      POSTGRES_USER: agentlab
+      POSTGRES_PASSWORD: agentlab
+      POSTGRES_DB: agentlab
+    ports:
+      - "127.0.0.1:${AGENTLAB_DB_PORT:-55432}:5432"
+    volumes:
+      - agentlab_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U agentlab -d agentlab && psql -h 127.0.0.1 -U agentlab -d agentlab -Atqc 'SELECT ready FROM seed_status WHERE id=1' | grep -qx t"]
+      interval: 2s
+      timeout: 5s
+      retries: 90
+      start_period: 10s
+    shm_size: 256mb
+volumes:
+  agentlab_data:
