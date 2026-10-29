@@ -242,6 +242,11 @@
 <div class="cardText"><h3>Fruit Juice</h3><div class="desc">One blackcurrant fruit juice drink, like Ribena.</div><div class="price">30p</div></div>
 <span class="open-hint">Tap to view details &amp; buy →</span></button></article>
 </div><div class="history"><h3>🎟️ Your purchases</h3><div id="purchaseHistory">Nothing bought yet — your 30 Ghost Money is ready!</div><button class="detail-back" id="resetPractice" style="margin-top:15px" type="button">↻ Reset my Ghost Money for practice</button></div>
+<div class="order-send" style="text-align:center;margin:20px auto 8px;padding:20px 16px;max-width:600px;border:2px solid #f2c84b;border-radius:22px;background:#211b15">
+  <h3 style="margin:0 0 12px;color:#ffe5a3">🎀 Finished choosing your snacks?</h3>
+  <button class="navBtn gold" id="sendOrderButton" type="button" disabled style="border:0;font:900 1rem 'Trebuchet MS',sans-serif;cursor:pointer">💌 Send My Order</button>
+  <p id="sendOrderHint" style="font-size:.88rem;color:#e9d5ac;line-height:1.5;margin:12px 0 0">Buy at least one snack to send your order.</p>
+</div>
 <div class="tinyNote">Tap any snack to see the bigger picture, choose how many portions, and buy using pretend Ghost Money. No real payments.</div>
 <div class="nav">
 <label class="navBtn ghost" for="page-ticket">← Back to ticket</label>
@@ -310,6 +315,11 @@
  function showWallet(){
   document.querySelectorAll('[data-wallet]').forEach(el=>{el.textContent=fmtWallet(available())});
   const hist=$('purchaseHistory');const purchases=load().history;
+  $('sendOrderButton').disabled=!purchases.length;
+  $('sendOrderButton').style.opacity=purchases.length?'1':'.5';
+  $('sendOrderHint').textContent=purchases.length
+    ? 'Opens Messages with your order filled in. Choose a contact and tap Send. The recipient number can be added later.'
+    : 'Buy at least one snack to send your order.';
   if(!purchases.length){hist.textContent='Nothing bought yet — your 30 Ghost Money is ready!';return}
   hist.replaceChildren();const ul=document.createElement('ul');
   purchases.slice().reverse().forEach(p=>{
@@ -351,6 +361,32 @@
   $('buyMessage').dataset.kind='';$('buyMessage').textContent='';
   renderDetail();$('page-detail').checked=true;window.scrollTo({top:0,behavior:'auto'});
  }
+ // The order is only handed to Messages when the guest taps the button.
+ // No recipient is stored until one is explicitly provided later.
+ $('sendOrderButton').addEventListener('click',()=>{
+  const data=load();
+  if(!data.history.length)return;
+  const grouped=new Map();
+  data.history.forEach(p=>{
+   const key=p.id||p.name;
+   const existing=grouped.get(key)||{id:p.id,name:p.name,quantity:0,total:0};
+   existing.quantity+=p.quantity;
+   existing.total+=p.total;
+   grouped.set(key,existing);
+  });
+  const lines=Array.from(grouped.values()).map(p=>{
+   const grams=p.id==='nerds'||p.id==='worms'?' ('+(p.quantity*10)+'g)':p.id==='chocolate'?' ('+(p.quantity*30)+'g)':'';
+   return '• '+p.name+' × '+p.quantity+grams+' — '+fmtGhost(p.total)+' Ghost Money';
+  });
+  const message='🎟️ SPOOKY VIP CINEMA ORDER\nGuest: '+name()+
+    '\n\n'+lines.join('\n')+
+    '\n\nTotal spent: '+fmtWallet(data.spent)+
+    '\nRemaining: '+fmtWallet(available())+
+    '\n\nPlease prepare these treats! 🍿';
+  // iOS uses sms:&body=; most other phones use sms:?body=.
+  const scheme=/iPhone|iPad|iPod/i.test(navigator.userAgent)?'sms:&body=':'sms:?body=';
+  window.location.href=scheme+encodeURIComponent(message);
+ });
  $('resetPractice').addEventListener('click',()=>{
   if(!window.confirm('Start '+name()+' back at 30 Ghost Money? This clears practice purchases.'))return;
   memory[name()]={spent:0,history:[]};save();showWallet();
