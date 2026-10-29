@@ -147,8 +147,56 @@
   .detail-price{font-size:1.8rem}
 }
 </style>
+
+<style id="vip-gate-style">
+ body:not(.vip-unlocked)>.wrap{visibility:hidden}
+ #vipPasswordGate{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:26px 16px;background:radial-gradient(circle at 50% 20%,#534023,#17120f 60%,#0d0a08);font-family:'Trebuchet MS',Arial,sans-serif}
+ body.vip-unlocked #vipPasswordGate{display:none}
+ .vip-gate-card{width:min(100%,480px);background:#fff7e8;border:4px solid #f2c84b;border-radius:28px;padding:30px 22px;text-align:center;box-shadow:0 22px 65px rgba(0,0,0,.6);color:#302213}
+ .vip-gate-card h1{font:700 clamp(2rem,7vw,3rem) Georgia,serif;margin:10px 0;color:#25190c}
+ .vip-gate-card p{line-height:1.5;color:#665238;margin:12px 0 20px}
+ .vip-gate-card label{font-weight:900;color:#4b3717;display:block;margin-bottom:9px}
+ #vipCodeInput{display:block;width:100%;font-size:1.2rem;padding:15px 13px;border:2px solid #bfa14d;border-radius:13px;background:#fff;color:#241b11;outline-offset:3px}
+ #vipGateButton{display:block;margin:16px auto 0;width:100%;padding:15px;font:900 1.1rem 'Trebuchet MS',Arial,sans-serif;border-radius:15px;border:0;cursor:pointer;background:#f2c84b;color:#241b11;box-shadow:0 5px 0 #9a751c}
+ #vipGateError{min-height:1.5em;color:#a32128;font-weight:800;margin:12px 0 0}
+</style>
 </head>
 <body>
+<div id="vipPasswordGate" role="dialog" aria-modal="true" aria-labelledby="vipGateTitle">
+ <form id="vipGateForm" class="vip-gate-card" autocomplete="off">
+  <div style="font-size:2rem" aria-hidden="true">🎀 🎟️ 🍿</div>
+  <div style="letter-spacing:.12em;font-weight:900;color:#986e20;font-size:.8rem">SPOOKY VIP CINEMA</div>
+  <h1 id="vipGateTitle">VIP Entry Only</h1>
+  <p>Enter your special code to enter the cinema!</p>
+  <label for="vipCodeInput">VIP access code</label>
+  <input id="vipCodeInput" type="password" placeholder="Enter code" required autocapitalize="off" autocorrect="off" spellcheck="false" />
+  <button id="vipGateButton" type="submit">🎟️ Enter the Cinema</button>
+  <div id="vipGateError" role="status" aria-live="polite"></div>
+ </form>
+</div>
+
+<script id="vip-gate-script">
+(function(){
+ 'use strict';
+ const area=document.querySelector('.wrap');
+ const form=document.getElementById('vipGateForm');
+ const input=document.getElementById('vipCodeInput');
+ const error=document.getElementById('vipGateError');
+ if(area)area.inert=true;
+ function unlock(){
+  if(area)area.inert=false;
+  document.body.classList.add('vip-unlocked');
+  try{sessionStorage.setItem('vip-cinema-unlocked-v1','yes')}catch(e){}
+ }
+ try{if(sessionStorage.getItem('vip-cinema-unlocked-v1')==='yes'){unlock();return}}catch(e){}
+ form.addEventListener('submit',function(event){
+  event.preventDefault();
+  if(input.value==='Halloween'){unlock();input.value='';}
+  else{error.textContent='That code is not quite right. Try again!';input.value='';input.focus();}
+ });
+})();
+</script>
+
 <input class="state" id="guest-emily" name="guest" type="radio"/>
 <input class="state" id="guest-elle" name="guest" type="radio"/>
 <input checked="" class="state" id="page-home" name="page" type="radio"/>
