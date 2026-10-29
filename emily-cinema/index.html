@@ -86,6 +86,8 @@
   .tinyNote{text-align:center;color:#d7c89b;margin-top:20px;font-size:.9rem;line-height:1.5}
   .guestName{font-weight:900;color:#fff1bb}
   .forEmily,.forElle{display:none}
+  /* Hide the other guest in ticket numbers; .mini span otherwise overrides .forEmily/.forElle */
+  .ticketGrid .mini strong > .forEmily,.ticketGrid .mini strong > .forElle{display:none;font-size:inherit;color:inherit;letter-spacing:normal}
   #guest-emily:checked ~ .wrap .forEmily{display:inline}
   #guest-elle:checked ~ .wrap .forElle{display:inline}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
