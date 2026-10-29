@@ -318,7 +318,7 @@
   $('sendOrderButton').disabled=!purchases.length;
   $('sendOrderButton').style.opacity=purchases.length?'1':'.5';
   $('sendOrderHint').textContent=purchases.length
-    ? 'Opens Messages with your order filled in. Choose a contact and tap Send. The recipient number can be added later.'
+    ? 'Opens Messages with the order and recipient filled in. Check the message, then tap Send.'
     : 'Buy at least one snack to send your order.';
   if(!purchases.length){hist.textContent='Nothing bought yet — your 30 Ghost Money is ready!';return}
   hist.replaceChildren();const ul=document.createElement('ul');
@@ -383,9 +383,10 @@
     '\n\nTotal spent: '+fmtWallet(data.spent)+
     '\nRemaining: '+fmtWallet(available())+
     '\n\nPlease prepare these treats! 🍿';
-  // iOS uses sms:&body=; most other phones use sms:?body=.
-  const scheme=/iPhone|iPad|iPod/i.test(navigator.userAgent)?'sms:&body=':'sms:?body=';
-  window.location.href=scheme+encodeURIComponent(message);
+  // A recipient is prefilled, but Messages still requires the guest to press Send.
+  const recipient='+447385680153';
+  const separator=/iPhone|iPad|iPod/i.test(navigator.userAgent)?'&body=':'?body=';
+  window.location.href='sms:'+recipient+separator+encodeURIComponent(message);
  });
  $('resetPractice').addEventListener('click',()=>{
   if(!window.confirm('Start '+name()+' back at 30 Ghost Money? This clears practice purchases.'))return;
