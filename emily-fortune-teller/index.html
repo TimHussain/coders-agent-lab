@@ -155,7 +155,7 @@ body.magic .scene .ball-magic-overlay{animation:orbPulse .7s ease-in-out 5}
 'use strict';
 const btn=document.getElementById('mic'),status=document.getElementById('status');
 const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-let recognition=null,desired=false,started=false,magicRunning=false,retry=null,audio=null;
+let recognition=null,desired=false,started=false,magicRunning=false,retry=null,audio=null,starting=false,session=0,heardParts=[];
 const fortunes=[
  ['Coming!','4:30 – 4:35'],
  ['Boo baskets','4:35 – 5:30'],
@@ -184,24 +184,34 @@ function reveal(){
 }
 function info(t){status.textContent=t||''}
 function norm(t){return t.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
-function near(w,choices){return choices.some(c=>w===c||(w.length>=4&&Math.abs(w.length-c.length)<=1&&lev(w,c)<=1))}
 function lev(a,b){let p=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){const n=[i];for(let j=1;j<=b.length;j++)n[j]=Math.min(n[j-1]+1,p[j]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=n}return p[b.length]}
+function near(w,choices){return choices.some(c=>w===c||(w.length>=3&&Math.abs(w.length-c.length)<=1&&lev(w,c)<=1))}
 function spell(raw){
- const w=norm(raw).split(' ').filter(Boolean),zig=['ziggy','ziggie','zigi','ziggi'],zag=['zaggy','zacky','zaggi','zaki','zaggy','zagy'],zee=['zee','see','z','zi'];
+ const w=norm(raw).split(' ').filter(Boolean);
+ const zig=['ziggy','ziggie','zigi','ziggi','siggy','sigi'];
+ const zag=['zaggy','zacky','zaggi','zaki','zagy','zag','zackie'];
+ const zee=['zee','see','z','zi','sea'];
+ const fate=['fate','faith','feet','future','fayt','face'];
  for(let i=0;i<w.length;i++){
   if(!near(w[i],zig))continue;
-  let phase=1;
-  for(const t of w.slice(i+1,i+8)){
-   if(phase===1&&near(t,zig))phase=2;
-   else if(phase===2&&near(t,zag))phase=3;
-   else if(phase===3&&near(t,zee)){phase=4;break}
+  // Require both Ziggies, Zaggy, Zee in order. Allow a tiny transcription
+  // glitch between words, but never accept an unrelated phrase.
+  let pos=i+1,phase=0,finish=-1;
+  const parts=[zig,zag,zee];
+  for(const part of parts){
+   let found=-1;
+   for(let j=pos;j<Math.min(pos+3,w.length);j++){
+    if(near(w[j],part)){found=j;break}
+   }
+   if(found<0){phase=-1;break}
+   phase++;pos=found+1;finish=found;
   }
-  if(phase!==4)continue;
-  const tail=w.slice(i+3).join(' ');
-  const question=/(what|wot|whats|will|our|are)/.test(tail);
-  const future=/(fate|faith|feet|future|fayt|face)/.test(tail);
-  const ending=/(be|bee|we|will)/.test(tail);
-  if(question&&future&&ending)return true;
+  if(phase!==3)continue;
+  const rest=w.slice(finish+1,finish+12);
+  const hasQuestion=rest.some(x=>['what','wot','whats','will'].includes(x));
+  const hasFate=rest.some(x=>near(x,fate));
+  const hasEnd=rest.some(x=>['be','bee','we','will'].includes(x));
+  if(hasQuestion&&hasFate&&hasEnd)return true;
  }
  return false;
 }
@@ -230,32 +240,73 @@ function whoosh(){
   source.start(now);source.stop(now+duration);
  }catch(e){}
 }
-function stop(){desired=false;started=false;clearTimeout(retry);btn.classList.remove('listening');btn.setAttribute('aria-label','Start listening');try{recognition&&recognition.abort()}catch(e){}}
+function stop(){
+ desired=false;started=false;starting=false;session++;
+ heardParts=[];clearTimeout(retry);
+ btn.classList.remove('listening');btn.setAttribute('aria-label','Start listening');
+ try{recognition&&recognition.abort()}catch(e){}
+}
 function magic(){
  if(magicRunning)return;
  magicRunning=true;stop();info('');
  writing.classList.remove('revealed');
- document.body.classList.add('magic');
- whoosh();
+ document.body.classList.add('magic');whoosh();
  setTimeout(()=>{document.body.classList.remove('magic');reveal();magicRunning=false},3500);
 }
+function scheduleRestart(id,delay){
+ if(!desired||magicRunning||id!==session)return;
+ clearTimeout(retry);
+ retry=setTimeout(()=>{if(desired&&!magicRunning&&id===session)listen()},delay);
+}
 function listen(){
- if(!desired||started||magicRunning)return;
+ if(!desired||started||starting||magicRunning)return;
+ const id=session;
+ starting=true;
  try{
-  const r=new Recognition();recognition=r;r.lang='en-GB';r.continuous=false;r.interimResults=true;r.maxAlternatives=5;
-  r.onstart=()=>{started=true;if(!desired){r.abort();return}btn.classList.add('listening');info('')};
-  r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++)for(let j=0;j<e.results[i].length;j++)if(spell(e.results[i][j].transcript)){magic();return}};
+  const r=new Recognition();recognition=r;
+  r.lang='en-GB';r.continuous=true;r.interimResults=true;r.maxAlternatives=5;
+  r.onstart=()=>{
+   if(id!==session||!desired){try{r.abort()}catch(e){}return}
+   starting=false;started=true;btn.classList.add('listening');info('');
+  };
+  r.onresult=e=>{
+   if(id!==session||!desired)return;
+   const transcript=[];
+   for(let i=0;i<e.results.length;i++){
+    const row=e.results[i];
+    if(!row||!row.length)continue;
+    transcript.push(row[0].transcript);
+    for(let j=0;j<Math.min(row.length,5);j++){
+     if(spell(row[j].transcript)){magic();return}
+    }
+   }
+   // iPad Safari sometimes divides a single sentence across result rows.
+   const combined=transcript.join(' ');
+   if(spell(combined)){magic();return}
+   const latest=norm(combined);
+   if(latest&&!heardParts.includes(latest)){
+    heardParts.push(latest);
+    if(heardParts.length>5)heardParts.shift();
+    if(spell(heardParts.join(' '))){magic();return}
+   }
+  };
   r.onerror=e=>{
+   if(id!==session)return;
    if(e.error==='not-allowed'||e.error==='service-not-allowed'){stop();info('Allow microphone access in Safari settings.')}
    else if(e.error==='audio-capture'){stop();info('Microphone unavailable. Check iPad permissions.')}
    else if(e.error==='network'){stop();info('Speech recognition needs an internet connection.')}
+   // 'no-speech' is silent and recoverable.
   };
-  r.onend=()=>{started=false;if(desired&&!magicRunning){clearTimeout(retry);retry=setTimeout(listen,300)}};
+  r.onend=()=>{
+   if(id!==session)return;
+   started=false;starting=false;
+   scheduleRestart(id,240);
+  };
   r.start();
- }catch(e){started=false;if(desired){clearTimeout(retry);retry=setTimeout(listen,700)}}
+ }catch(e){starting=false;scheduleRestart(id,550)}
 }
 if(!Recognition){btn.disabled=true;info('Speech recognition unavailable. Try Safari on your iPad.');return}
-btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;desired=true;btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
+btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&desired)stop()});
 })();
 </script></body></html>
