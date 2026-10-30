@@ -6,6 +6,7 @@
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <title>Spooky VIP Cinema</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&display=swap');
   :root{
     --bg:#111;
     --panel:#191919;
@@ -147,45 +148,361 @@
   .detail-price{font-size:1.8rem}
 }
 
-/* STEP 1: Halloween sleepover background + headers only. All interactive controls unchanged. */
+
+/* KAWAII SLEEPOVER GLOW-UP — visual only; buying, ticket and code logic unchanged. */
+:root{
+  --k-ink:#5b365b;
+  --k-pink:#ff9fc7;
+  --k-lilac:#d1b7f2;
+  --k-peach:#ffcead;
+  --k-butter:#ffe49e;
+  --k-mint:#bdebd5;
+  --k-paper:#fffafd;
+}
 body{
- background-color:#160a25;
- background-image:
-  radial-gradient(ellipse at 12% 10%,rgba(255,95,194,.23),transparent 36%),
-  radial-gradient(ellipse at 88% 17%,rgba(255,139,52,.20),transparent 33%),
-  radial-gradient(ellipse at 51% 64%,rgba(126,57,235,.23),transparent 46%),
-  radial-gradient(circle,rgba(255,237,189,.32) 1px,transparent 2px),
-  linear-gradient(155deg,#1b0b34 0%,#2b0f48 36%,#160b2c 72%,#160b22 100%);
- background-size:auto,auto,auto,110px 110px,auto;
+  color:var(--k-ink);
+  font-family:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+  background-color:#fff3fa;
+  background-image:
+     radial-gradient(circle at 14% 12%,rgba(255,179,211,.65) 0 8%,transparent 36%),
+     radial-gradient(circle at 90% 20%,rgba(211,188,246,.62) 0 13%,transparent 36%),
+     radial-gradient(circle at 30% 85%,rgba(255,219,157,.44) 0 8%,transparent 35%),
+     radial-gradient(circle at 78% 80%,rgba(172,231,209,.40) 0 9%,transparent 34%),
+     radial-gradient(circle,rgba(207,133,188,.24) 1.2px,transparent 1.8px),
+     linear-gradient(150deg,#fffafd,#fff1f6 42%,#f7edff 76%,#fff8ee);
+  background-size:auto,auto,auto,auto,32px 32px,auto;
 }
-body::before,body::after{position:fixed;z-index:0;pointer-events:none;font-size:clamp(3rem,7vw,6rem);filter:drop-shadow(0 6px 15px rgba(0,0,0,.28));opacity:.18}
-body::before{content:'☾';top:7%;left:2%;color:#ffd4ab}
-body::after{content:'✦';bottom:8%;right:3%;color:#ffa9d8}
+body::before,body::after{position:fixed;pointer-events:none;z-index:0;font-size:clamp(3rem,5.8vw,5.2rem);opacity:.22;filter:drop-shadow(0 3px 0 #fff);}
+body::before{content:'✿';top:12%;left:1.6%;color:#e77fad;transform:rotate(-20deg)}
+body::after{content:'✧';bottom:7%;right:2%;color:#9d74ca;transform:rotate(12deg)}
 .wrap{position:relative;z-index:1}
-#home .hero{position:relative;overflow:hidden;border:3px solid #ffa1d7;border-radius:32px;background:linear-gradient(150deg,rgba(70,20,108,.98),rgba(44,16,89,.97) 62%,rgba(112,27,105,.95));box-shadow:0 0 0 6px rgba(255,177,220,.09),0 24px 65px rgba(14,4,38,.45)}
-#home .hero::before{content:'✦ 🎀 ✦';display:block;color:#ffd76b;font-size:1.8rem;letter-spacing:.2em;text-shadow:0 0 18px #ff8ad5;margin:0 auto 14px}
-#home .hero h1{color:#fff6e6;text-shadow:0 4px 0 #a23290,0 0 25px rgba(255,137,225,.35)}
-#home .hero>p{color:#fff0ca;font-weight:600}
-#home .hero .titleTag{color:#fff9dc;border-color:#ffc7e2;background:#a72e83;box-shadow:0 4px 0 #572265}
-#shop .shopHead,#detailPage .shopHead{position:relative;isolation:isolate;overflow:hidden;border:3px solid #ffb8dd;border-radius:31px;padding:31px 20px 27px;background:linear-gradient(120deg,#57217a,#33115c 50%,#70246e);box-shadow:0 0 0 5px rgba(255,188,216,.07),0 19px 42px rgba(8,3,27,.40),inset 0 0 32px rgba(252,102,193,.17)}
-#shop .shopHead::before,#detailPage .shopHead::before{content:'';position:absolute;left:16px;right:16px;top:10px;height:8px;border-radius:5px;background:repeating-linear-gradient(90deg,#ffd88a 0 11px,transparent 11px 22px);opacity:.78;pointer-events:none}
-#shop .shopHead::after,#detailPage .shopHead::after{content:'';position:absolute;left:16px;right:16px;bottom:10px;height:7px;border-radius:5px;background:repeating-linear-gradient(90deg,#ffa7d9 0 12px,transparent 12px 22px);opacity:.75;pointer-events:none}
-#shop .shopHead h1,#detailPage .shopHead h1{color:#fff9e8;text-shadow:0 3px 0 #a3348b,0 0 24px rgba(255,145,207,.44);font-family:Georgia,serif;letter-spacing:.01em;margin:13px auto 12px;max-width:760px;line-height:1.06}
-#shop .shopHead p,#detailPage .shopHead p{color:#ffe8cb;font-weight:600}
-#shop .shopHead .titleTag,#detailPage .shopHead .titleTag{background:#f8a5d7;border:2px solid #ffe4a6;color:#411444;box-shadow:0 4px 0 #a13f89}
-#shop .shopHead .spooky-head-icons{display:block;margin:9px 0 4px;font-size:clamp(1.5rem,4vw,2.15rem);letter-spacing:.24em;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
-#shop .shopHead .spooky-word-first{display:block;font-size:.61em;font-style:italic;color:#ffd682;text-shadow:0 2px 0 #652a6c}
-#shop .shopHead .spooky-word-second{display:block;color:#ffb6df;text-shadow:0 3px 0 #6a2877,0 0 22px #c545a6}
-#shop .shopHead .spooky-subtitle{display:inline-block;background:rgba(27,9,48,.55);border:1px solid rgba(255,206,157,.55);padding:8px 15px;border-radius:999px;margin:2px auto 12px;color:#ffe3a9;font-size:clamp(.73rem,2vw,.88rem);letter-spacing:.065em;font-weight:900}
-#shop .shopHead .spooky-footer-icons{margin-top:11px;display:block;color:#ffcadc;font-size:1.15rem;letter-spacing:.27em}
-@media(max-width:600px){
- #shop .shopHead,#detailPage .shopHead{padding:28px 10px 25px;border-radius:22px}
- #shop .shopHead .spooky-subtitle{padding:7px 10px;letter-spacing:0;font-size:.72rem}
- #shop .shopHead .spooky-head-icons{letter-spacing:.1em}
- #shop .shopHead h1{font-size:clamp(2rem,8vw,3.2rem)}
- #home .hero::before{font-size:1.45rem}
+.page{padding-top:22px}
+.shell{
+  background:rgba(255,250,253,.91);
+  border:3px solid #f4bad5;
+  border-radius:34px;
+  box-shadow:0 8px 0 #fbd2e5,0 20px 60px rgba(145,83,133,.16);
+  padding:clamp(12px,2.1vw,25px);
 }
-@media(prefers-reduced-motion:reduce){#shop .shopHead *,#home .hero *{animation:none!important}}
+.titleTag{
+  color:#8e3d7b;
+  background:#ffdbed;
+  border:2px solid #f8a8cb;
+  box-shadow:0 4px 0 #f5b9d2;
+  border-radius:999px;
+  letter-spacing:.07em;
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+}
+/* Kawaii scrapbook welcome, but name selection and links are unchanged. */
+#home .hero{
+  position:relative;
+  background:linear-gradient(145deg,#fff9ec,#fff2fb 65%,#f1e7ff);
+  border:4px solid #efb4d7;
+  overflow:visible;
+  box-shadow:0 8px 0 #f6cae0,0 25px 55px rgba(152,95,144,.16);
+}
+#home .hero::before{
+  content:'✿ 🎀 ✦ 👻 ✦ 🎀 ✿';
+  display:block;
+  color:#d76fa7;
+  text-shadow:none;
+  font-size:clamp(1.4rem,4vw,2rem);
+  letter-spacing:.09em;
+  margin:0 auto 12px;
+}
+#home .hero::after{
+  content:'sleepover club ♡';
+  position:absolute;
+  top:-17px;
+  right:22px;
+  background:#f1dbff;
+  border:2px solid #cda6ec;
+  color:#9260ae;
+  border-radius:15px 8px 14px 6px;
+  padding:6px 12px;
+  font:700 .86rem 'Patrick Hand','Trebuchet MS',sans-serif;
+  transform:rotate(7deg);
+}
+#home .hero .titleTag{background:#f3d9ff;border-color:#d4a8ec;color:#744b98}
+#home .hero h1{
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+  font-weight:700;
+  color:#db72aa;
+  text-shadow:3px 3px 0 #ffe0ec;
+  letter-spacing:-.035em;
+  font-size:clamp(2.4rem,7vw,5rem);
+}
+#home .hero>p{color:#886185;font:600 clamp(1rem,2vw,1.23rem)/1.5 'Patrick Hand','Fredoka',sans-serif}
+.pickBox{background:#fffdf4;border:3px dashed #efb1c9;box-shadow:0 6px 0 #ffe2ed}
+.pickBox h2{font:700 clamp(1.6rem,3vw,2.2rem) 'Fredoka','Trebuchet MS',sans-serif;color:#875c90}
+.nameBtn{
+  background:#fce7f4;border:3px solid #efbad1;border-radius:19px;
+  font-family:'Fredoka','Trebuchet MS',sans-serif;color:#8e487d;
+  box-shadow:0 5px 0 #eab9cd;font-size:1.15rem;
+}
+#guest-emily:checked ~ .wrap .name-emily,
+#guest-elle:checked ~ .wrap .name-elle{
+  background:#c4e9dc;border-color:#82cbb4;color:#3e7462;
+  box-shadow:0 5px 0 #9ad4c1;
+}
+.helper{color:#aa759e}
+.startBtn{
+  background:linear-gradient(135deg,#fface0,#e9bdf3);
+  color:#602f66;border:3px solid white;
+  box-shadow:0 5px 0 #ca8caf,0 12px 20px #e9b2d160;
+  font:700 1rem 'Fredoka','Trebuchet MS',sans-serif;
+}
+#shop .shopHead,#detailPage .shopHead{
+  position:relative;
+  isolation:isolate;overflow:visible;
+  background:linear-gradient(140deg,#fff9e7,#fff0f9 53%,#efe5ff);
+  border:4px solid #f2b4d1;
+  border-radius:32px;
+  padding:25px 18px 23px;
+  box-shadow:0 7px 0 #f9cadf,0 16px 25px #eac3db68;
+}
+#shop .shopHead::before,#detailPage .shopHead::before{
+  content:'✧  ♡  ✿  ♡  ✧';
+  position:absolute;top:-19px;left:14px;right:auto;height:auto;
+  width:auto;background:#fce8b4;border:2px solid #f0c47b;opacity:1;
+  color:#ca74a1;font:700 1rem 'Patrick Hand',sans-serif;
+  padding:4px 10px;border-radius:14px;transform:rotate(-4deg);
+}
+#shop .shopHead::after,#detailPage .shopHead::after{
+  content:'boo-tiful! ♡';position:absolute;
+  top:-14px;right:12px;left:auto;bottom:auto;height:auto;
+  background:#e1d3ff;border:2px solid #c4a2f1;opacity:1;
+  color:#855caf;padding:4px 12px;
+  border-radius:13px;font:700 1.08rem 'Patrick Hand',sans-serif;
+  transform:rotate(6deg);
+}
+#shop .shopHead h1,#detailPage .shopHead h1{
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+  color:#b966a7;text-shadow:3px 3px 0 #ffe2f1;
+  font-weight:700;
+  letter-spacing:-.025em;
+  margin:13px auto 9px;
+}
+#shop .shopHead .spooky-word-first{
+  color:#995fbc;font:700 .66em 'Patrick Hand','Fredoka',sans-serif;
+  font-style:normal;text-shadow:2px 2px 0 #fff;
+  letter-spacing:.035em;
+}
+#shop .shopHead .spooky-word-second{
+  color:#ed7fb3;text-shadow:3px 3px 0 #fff8d9;
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+}
+#shop .shopHead .spooky-head-icons{
+  font-size:clamp(1.5rem,4.6vw,2.2rem);
+  letter-spacing:.16em;margin:12px auto 4px;
+}
+#shop .shopHead .titleTag,#detailPage .shopHead .titleTag{
+  background:#fff5d4;border:2px solid #efd09a;
+  color:#a26c90;box-shadow:0 4px 0 #f8e2b1;
+}
+#shop .shopHead .spooky-subtitle{
+  border:2px dashed #d7a5d6;
+  background:#fffdf7;color:#9a669e;
+  border-radius:13px;font:700 clamp(.82rem,2vw,1.02rem) 'Patrick Hand','Fredoka',sans-serif;
+  letter-spacing:.03em;
+  padding:7px 14px;margin:6px auto 11px;
+}
+#shop .shopHead p,#detailPage .shopHead p{
+  color:#88658b;font:600 clamp(1rem,2vw,1.2rem)/1.48 'Patrick Hand','Fredoka',sans-serif;
+}
+#shop .shopHead .spooky-footer-icons{color:#db78b2;font-size:1.3rem;letter-spacing:.2em}
+#detailPage .shopHead h1{color:#d979af}
+#shop .shopHead .titleTag{font-size:.77rem}
+/* Pretty little paper-and-sticker frames around the original photographic snack images. */
+.cards{gap:clamp(12px,2vw,22px);margin-top:28px}
+.card{
+  --card-border:#eeacd2;--card-color:#fff4fa;--picture-color:#fff9ed;
+  color:#68466d;
+  background:var(--card-color);
+  border:3px solid var(--card-border);
+  border-radius:27px;
+  box-shadow:0 6px 0 color-mix(in srgb,var(--card-border) 55%,white),0 13px 28px rgba(142,77,126,.12);
+  transform:rotate(-.4deg);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.card:nth-child(7n + 2){--card-border:#cda9f0;--card-color:#faf1ff;--picture-color:#f9f4ff;transform:rotate(.5deg)}
+.card:nth-child(7n + 3){--card-border:#f3cd83;--card-color:#fff9e8;--picture-color:#fffbed;transform:rotate(-.3deg)}
+.card:nth-child(7n + 4){--card-border:#a9dcc8;--card-color:#f0fff8;--picture-color:#f1fff9;transform:rotate(.45deg)}
+.card:nth-child(7n + 5){--card-border:#f2b3ac;--card-color:#fff1ec;--picture-color:#fff8ef;transform:rotate(-.4deg)}
+.card:nth-child(7n + 6){--card-border:#e8a8ca;--card-color:#fff2f8;--picture-color:#fffbf4;transform:rotate(.3deg)}
+.card:nth-child(7n + 7){--card-border:#b4cee9;--card-color:#f1f8ff;--picture-color:#f6faff;transform:rotate(-.2deg)}
+.card:hover,.card:focus-within{transform:rotate(0) translateY(-4px);box-shadow:0 9px 0 var(--card-border),0 20px 30px #d2a7c558}
+.imgBox{
+  background:
+    radial-gradient(circle at 16% 18%,rgba(247,167,209,.22) 0 10%,transparent 19%),
+    radial-gradient(circle at 87% 77%,rgba(223,193,255,.26) 0 9%,transparent 18%),
+    var(--picture-color);
+  border-bottom:2px dashed var(--card-border);
+  border-radius:20px 20px 10px 10px;
+  margin:8px 8px 0;height:185px;
+}
+.imgBox img{filter:drop-shadow(0 10px 9px #ad93a633)}
+.imgBox::after{
+  content:'✧';position:absolute;bottom:7px;left:10px;
+  font-size:1.7rem;color:#d989be;opacity:.9;
+  pointer-events:none;transform:rotate(-12deg);
+}
+.ribbon{
+  background:#fffdf7;color:#906394;border:1.5px dashed #d6a4c8;
+  border-radius:999px;font:700 .8rem 'Patrick Hand','Fredoka',sans-serif;
+  padding:5px 12px;box-shadow:0 2px 0 #f9d9e6;
+}
+.bow{font-size:1.3rem;filter:drop-shadow(0 2px 1px #fff)}
+.cardText{padding:15px 17px 19px;background:var(--card-color)}
+.cardText h3{
+  color:#754879;font:700 1.19rem/1.15 'Fredoka','Trebuchet MS',sans-serif;
+}
+.cardText .desc{color:#896e86;font:500 .94rem/1.35 'Fredoka','Trebuchet MS',sans-serif}
+.price{
+  background:linear-gradient(135deg,#ffe5a1,#fff0b8);
+  border:2px solid #e9c077;color:#865275;
+  border-radius:18px;
+  padding:6px 13px;font:700 1.07rem 'Fredoka','Trebuchet MS',sans-serif;
+  box-shadow:0 3px 0 #f4d99b;
+}
+.open-hint{
+  background:#f7d8f0;color:#8b4986;text-decoration:none;
+  font:700 .87rem 'Fredoka','Trebuchet MS',sans-serif;
+  padding:10px 12px;border-radius:15px;border:2px solid #e6b6dc;
+  display:inline-block;margin-top:12px;
+  box-shadow:0 3px 0 #dcb7d8;
+}
+.product-open:hover .open-hint,.product-open:focus-visible .open-hint{background:#e2caf7;color:#673a82}
+.product-open:focus-visible{outline-color:#9e65c2}
+/* Ghost wallet styling only; existing balances remain unchanged. */
+.wallet-strip{
+  border:3px solid #cfaae6;
+  background:linear-gradient(110deg,#ffe6f1,#eee2ff 53%,#fff0cf);
+  color:#8d548e;padding:15px 18px;
+  border-radius:23px;box-shadow:0 6px 0 #e1cbf3;
+  margin:22px 0 23px;
+  font:700 1.06rem 'Fredoka','Trebuchet MS',sans-serif;
+}
+.wallet-strip::before{content:'👻';font-size:1.5rem;filter:drop-shadow(0 2px 1px #fff)}
+.wallet-strip .wallet-amount{
+  color:#8c48a4;
+  font:700 clamp(1.18rem,3vw,1.55rem) 'Fredoka','Trebuchet MS',sans-serif;
+  background:#fffded;border:2px dashed #d6a4db;
+  padding:8px 13px;border-radius:16px;
+  box-shadow:0 3px 0 #eadbf1;
+}
+#shopPurchaseNotice{
+  background:#ecfff4!important;color:#407b66!important;
+  border-color:#a9dcc8!important;border-radius:17px!important;
+}
+.ticketFooter{color:#82598d}
+.money.ticket-wallet{
+  background:#fff0d3;border:3px solid #f2c6d9;color:#80538a;
+  box-shadow:0 4px 0 #f9cfe1;
+}
+/* Keep the actual vintage-red ticket face, soften its paper frame. */
+.ticketCard{border-color:#ffd1e3;box-shadow:0 7px 0 #f0c4d6,0 23px 40px #a7869c40}
+.navBtn,.detail-back{
+  font-family:'Fredoka','Trebuchet MS',sans-serif;
+  border-radius:17px;
+  font-weight:700;
+}
+.navBtn.gold,.startBtn{
+  background:linear-gradient(135deg,#ffaecf,#e9c2ff);
+  color:#793e7a;
+  border:2px solid #fff2fc;
+  box-shadow:0 5px 0 #d4a1cb;
+}
+.navBtn.ghost,.detail-back{
+  border:2px solid #dbacd7;background:#fff0f9;color:#87528c;
+  box-shadow:0 4px 0 #f1cce7;
+}
+.detail-card{
+  background:#fffafd;color:#65446b;border:3px solid #eac2e5;
+  border-radius:28px;box-shadow:0 7px 0 #e8c6dd,0 22px 46px #c9a4c04a;
+}
+.detail-visual{background:radial-gradient(circle at 50% 35%,#fffdf2,#f7ecff);border-right:2px dashed #edcfe5}
+.detail-info{background:#fffbff}
+.detail-info .subtitle{color:#b76d9a;font:700 .83rem 'Patrick Hand',sans-serif;letter-spacing:.08em}
+.detail-info h2{color:#9e5798;font:700 clamp(2rem,4.5vw,3rem)/1.05 'Fredoka','Trebuchet MS',sans-serif}
+.detail-info p,.detail-unit{color:#8b6e87}
+.detail-price{color:#b9639c;font-family:'Fredoka',sans-serif}
+.qty-group{border-color:#f0d7e8}
+.qty-stepper{border-color:#e8bcd9;background:#fff8fd}
+.qty-stepper button{background:#ffe0f2;color:#8a568f}
+.qty-stepper output{color:#7a5284}
+.summary-line{border-color:#f0d7e8;color:#845788}
+.detail-buy{
+  border:3px solid #e7b4d9;
+  background:linear-gradient(110deg,#ee9fcf,#cdb0f8);
+  color:#4d2d60;box-shadow:0 5px 0 #c18cc7;
+  font:700 1.07rem 'Fredoka','Trebuchet MS',sans-serif;
+}
+.stock{color:#4e9475}
+.history{
+  background:#fff4fc;border:3px dashed #ddacdb;
+  color:#76577e;border-radius:20px;
+  box-shadow:0 5px 0 #f8d8ee;
+}
+.history h3{color:#ac619a}
+.history p{color:#8b6b86}
+.tinyNote{color:#916b96}
+.order-send{
+  background:linear-gradient(135deg,#fff2fa,#f0e8ff)!important;
+  border:3px dashed #dcb2e1!important;
+  color:#87578c!important;
+}
+.order-send h3{color:#a663a3!important}
+#sendOrderHint{color:#936e98!important}
+#sendOrderButton{color:#6c367c!important;background:linear-gradient(110deg,#ffaad5,#ddc0ff)!important;box-shadow:0 4px 0 #bf9acb}
+body #vipPasswordGate{
+  background:radial-gradient(circle at 20% 20%,#fbd2e7,transparent 35%),radial-gradient(circle at 82% 80%,#e5d5ff,transparent 36%),#fff3fa;
+}
+body .vip-gate-card{
+  border:4px solid #f4b5d6;background:#fff9fd;
+  box-shadow:0 7px 0 #fbd3e6,0 26px 55px #a772a344;
+  color:#895b91;
+}
+body .vip-gate-card h1{color:#ca70a5;font-family:'Fredoka',sans-serif}
+body .vip-gate-card p{color:#8b7192}
+body .vip-gate-card label{color:#9d6094}
+body #vipCodeInput{border-color:#d9b6e8;background:#fffdfd;color:#6e4877}
+body #vipGateButton{
+  background:linear-gradient(105deg,#ffc0dd,#dfc2ff);
+  color:#6e4175;box-shadow:0 5px 0 #caa6d3;
+  font-family:'Fredoka',sans-serif;
+}
+@media(max-width:670px){
+  .page{padding:17px 10px 38px}
+  .shell{padding:12px;border-radius:25px}
+  #shop .shopHead,#detailPage .shopHead{padding:28px 12px 21px;border-radius:23px}
+  #shop .shopHead .spooky-head-icons{letter-spacing:.1em}
+  #shop .shopHead::before,#detailPage .shopHead::before{left:8px;top:-13px;font-size:.7rem}
+  #shop .shopHead::after,#detailPage .shopHead::after{right:7px;top:-12px;font-size:.87rem}
+  #shop .shopHead h1{font-size:clamp(2.05rem,8vw,3.3rem)}
+  #shop .shopHead .spooky-subtitle{font-size:.78rem;letter-spacing:0;padding:7px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+  .card{border-width:2px;border-radius:21px;transform:none!important}
+  .imgBox{height:135px;padding:8px;margin:5px 5px 0;border-radius:15px 15px 8px 8px}
+  .cardText{padding:10px 10px 14px}
+  .cardText h3{font-size:.99rem}
+  .cardText .desc{font-size:.83rem}
+  .price{padding:5px 10px}
+  .open-hint{padding:8px 9px;font-size:.76rem}
+  .ribbon{font-size:.7rem;padding:4px 7px}
+  .wallet-strip{padding:10px;gap:7px;font-size:.88rem}
+  .wallet-strip .wallet-amount{font-size:1rem;padding:6px 8px}
+  .detail-visual{border-right:0;border-bottom:2px dashed #edcfe5}
+  #home .hero::after{font-size:.73rem;top:-14px}
+}
+@media(max-width:360px){
+  .cards{gap:8px}
+  .imgBox{height:112px}
+  .cardText h3{font-size:.89rem}
+}
+@media(prefers-reduced-motion:reduce){
+ .card,.imgBox img{transition:none!important}
+}
 
 </style>
 
@@ -305,9 +622,9 @@ body::after{content:'✦';bottom:8%;right:3%;color:#ffa9d8}
 <div class="wrap">
 <section class="page" id="home">
 <div class="shell hero">
-<span class="titleTag">🎬 Spooky VIP cinema • Halloween sleepover</span>
-<h1>It's a spooky<br/>movie night! 🎃</h1>
-<p>✨ Cute tickets, spooky giggles, bestie movie vibes and delicious treats! ✨</p>
+<span class="titleTag">🎀 boo crew ♡ spooky VIP cinema 🎬</span>
+<h1>the cutest<br/>movie night! ♡</h1>
+<p>☾ sweet treats · cosy blankets · bestie sleepover · a little Halloween magic ✧</p>
 <div class="pickBox">
 <h2>Who’s entering the cinema?</h2>
 <div class="nameRow">
@@ -355,12 +672,12 @@ body::after{content:'✦';bottom:8%;right:3%;color:#ffa9d8}
 <section class="page" id="shop">
 <div class="shell">
 <div class="shopHead">
-<span class="titleTag">✦ NOW SHOWING: THE BOO CREW ✦</span>
+<span class="titleTag">✿ boo crew · late-night snack bar ✿</span>
 <span class="spooky-head-icons" aria-hidden="true">🎀 👻 🍿 🎃 🦇</span>
-<h1><span class="spooky-word-first">Spooky VIP</span><span class="spooky-word-second">SNACK SHOP!</span></h1>
-<div class="spooky-subtitle">✨ MOVIE NIGHT TREATS · HALLOWEEN SLEEPOVER ✨</div>
-<p>Grab your popcorn, pick your treats and get ready for the cutest spooky cinema night!</p>
-<span class="spooky-footer-icons" aria-hidden="true">✦ ♡ ✦ 🎬 ✦ ♡ ✦</span>
+<h1><span class="spooky-word-first">the boo crew’s</span><span class="spooky-word-second">snack shop ♡</span></h1>
+<div class="spooky-subtitle">✧ cosy movie night · spooky sleepover · yummy treats ✧</div>
+<p>Pick your favourite treats for a boo-tiful movie night with your bestie!</p>
+<span class="spooky-footer-icons" aria-hidden="true">✿ ♡ ✧ 🎬 ✧ ♡ ✿</span>
 </div><div class="wallet-strip">🎟️ VIP snack wallet<strong class="wallet-amount" data-wallet="true">30 Ghost Money</strong></div>
 <div id="shopPurchaseNotice" role="status" aria-live="polite" hidden style="margin:12px 0;padding:13px 16px;border:2px solid #f2c84b;border-radius:14px;background:#fff7ea;color:#3c2912;font-weight:900;text-align:center"></div>
 <div class="cards">
@@ -406,7 +723,7 @@ body::after{content:'✦';bottom:8%;right:3%;color:#ffa9d8}
 </section>
 <section class="page" id="detailPage">
 <div class="shell">
-<div class="shopHead"><span class="titleTag">VIP snack shop</span><h1>Choose your treat</h1><p>One little click closer to movie-night snacks!</p></div>
+<div class="shopHead"><span class="titleTag">♡ your little treat corner ♡</span><h1>pick your treat! ✿</h1><p>so many cute movie night snacks — which one will you choose?</p></div>
 <div class="wallet-strip"><span>🎟️ Ghost Money left</span><strong class="wallet-amount" data-wallet="true">30 Ghost Money</strong></div>
 <div class="detail-card">
 <div class="detail-visual"><span class="corner-bow">🎀</span><img alt="Selected snack" id="bigSnackImage"/></div>
