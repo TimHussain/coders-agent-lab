@@ -157,7 +157,6 @@ const btn=document.getElementById('mic'),status=document.getElementById('status'
 const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
 let recognition=null,desired=false,started=false,magicRunning=false,retry=null,audio=null,starting=false,session=0,heardParts=[];
 const fortunes=[
- ['Coming!','4:30 – 4:35'],
  ['Boo baskets','4:35 – 5:30'],
  ['Boba','5:30 – 5:45'],
  ['Getting ready','6:00 – 6:30'],
@@ -171,16 +170,43 @@ const fortunes=[
 const writing=document.getElementById('fortune-writing');
 const fortuneName=document.getElementById('fortune-name');
 const fortuneTime=document.getElementById('fortune-time');
-const progressKey='emily-fortune-next-v1';
+const progressKey='emily-fortune-next-v2';
 let nextFortune=0;
 try{const saved=Number(sessionStorage.getItem(progressKey));if(Number.isInteger(saved)&&saved>=0&&saved<=fortunes.length)nextFortune=saved}catch(e){}
+// First announcement is a voice practice. Later fortunes stay silent until approved.
+const practiceLine='Ahhh... the crystal ball has spoken. On this mysterious Halloween night... your first destiny awaits. It is time... to discover your Boo Baskets.';
+let preferredVoice=null;
+function findVoice(){
+ if(!('speechSynthesis' in window))return null;
+ const voices=window.speechSynthesis.getVoices();
+ const english=voices.filter(v=>/^en(?:-|_)/i.test(v.lang));
+ const preferred=['serena','martha','kate','moira','samantha','tessa','victoria','karen','susan','female'];
+ return english.find(v=>preferred.some(n=>v.name.toLowerCase().includes(n)))||
+        english.find(v=>/^en-GB/i.test(v.lang))||english[0]||voices[0]||null;
+}
+function speakFirstFortune(){
+ if(!('speechSynthesis' in window))return;
+ try{
+  window.speechSynthesis.cancel();
+  const voiceLine=new SpeechSynthesisUtterance(practiceLine);
+  preferredVoice=findVoice();
+  if(preferredVoice)voiceLine.voice=preferredVoice;
+  voiceLine.lang=preferredVoice?.lang||'en-GB';
+  voiceLine.rate=.79;
+  voiceLine.pitch=.84;
+  voiceLine.volume=1;
+  window.speechSynthesis.speak(voiceLine);
+ }catch(e){}
+}
 function reveal(){
- const entry=fortunes[nextFortune];
+ const index=nextFortune;
+ const entry=fortunes[index];
  if(!entry)return;
  fortuneName.textContent=entry[0];fortuneTime.textContent=entry[1];
  writing.classList.add('revealed');
  nextFortune++;
  try{sessionStorage.setItem(progressKey,String(nextFortune))}catch(e){}
+ if(index===0)speakFirstFortune();
 }
 function info(t){status.textContent=t||''}
 function norm(t){return t.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
