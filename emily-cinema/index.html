@@ -182,18 +182,77 @@
  const form=document.getElementById('vipGateForm');
  const input=document.getElementById('vipCodeInput');
  const error=document.getElementById('vipGateError');
+ const button=document.getElementById('vipGateButton');
+ const attemptsKey='spooky-vip-incorrect-tries-v1';
+ const unlockedKey='vip-cinema-unlocked-v3';
+ const maxTries=3;
+ const lockDuration=15*60*1000; // 15 minutes on this browser after three mistakes
  if(area)area.inert=true;
+ function readAttempts(){
+  try{
+   const value=JSON.parse(localStorage.getItem(attemptsKey)||'{}');
+   return {tries:Math.max(0,Math.min(maxTries,Number(value.tries)||0)),until:Number(value.until)||0};
+  }catch(e){return {tries:0,until:0}}
+ }
+ function saveAttempts(value){
+  try{localStorage.setItem(attemptsKey,JSON.stringify(value))}catch(e){}
+ }
  function unlock(){
+  saveAttempts({tries:0,until:0});
   if(area)area.inert=false;
   document.body.classList.add('vip-unlocked');
-  try{sessionStorage.setItem('vip-cinema-unlocked-v2','yes')}catch(e){}
+  try{sessionStorage.setItem(unlockedKey,'yes')}catch(e){}
  }
- try{if(sessionStorage.getItem('vip-cinema-unlocked-v2')==='yes'){unlock();return}}catch(e){}
+ function refreshLock(){
+  let state=readAttempts();
+  if(state.until>0&&state.until<=Date.now()){
+   state={tries:0,until:0};
+   saveAttempts(state);
+  }
+  if(state.until>Date.now()){
+   input.disabled=true;button.disabled=true;
+   const mins=Math.ceil((state.until-Date.now())/60000);
+   error.textContent='Too many wrong passwords. This device is locked for '+mins+' more minute'+(mins===1?'':'s')+'.';
+   return true;
+  }
+  input.disabled=false;button.disabled=false;
+  return false;
+ }
+ // Check for a lock before accepting any prior successful session.
+ const locked=refreshLock();
+ if(!locked){
+  try{if(sessionStorage.getItem(unlockedKey)==='yes'){unlock();return}}catch(e){}
+ }
  form.addEventListener('submit',function(event){
   event.preventDefault();
-  if(input.value==='1359'){unlock();input.value='';}
-  else{error.textContent='That password is not quite right. Try again!';input.value='';input.focus();}
+  if(refreshLock())return;
+  if(input.value==='1359'){
+   input.value='';
+   unlock();
+   return;
+  }
+  const state=readAttempts();
+  const tries=state.tries+1;
+  input.value='';
+  if(tries>=maxTries){
+   saveAttempts({tries:maxTries,until:Date.now()+lockDuration});
+   refreshLock();
+  }else{
+   saveAttempts({tries:tries,until:0});
+   const remaining=maxTries-tries;
+   error.textContent='Wrong password. '+remaining+' '+(remaining===1?'try':'tries')+' left.';
+   input.focus();
+  }
  });
+ // Update the remaining wait time and release the form when it ends.
+ setInterval(function(){
+  if(document.body.classList.contains('vip-unlocked'))return;
+  if(refreshLock())return;
+  const state=readAttempts();
+  if(state.tries===0&&error.textContent.startsWith('Too many')){
+   error.textContent='You can try your password again now.';
+  }
+ },10000);
 })();
 </script>
 
