@@ -146,6 +146,47 @@
   .detail-info h2{font-size:2rem}
   .detail-price{font-size:1.8rem}
 }
+
+/* STEP 1: Halloween sleepover background + headers only. All interactive controls unchanged. */
+body{
+ background-color:#160a25;
+ background-image:
+  radial-gradient(ellipse at 12% 10%,rgba(255,95,194,.23),transparent 36%),
+  radial-gradient(ellipse at 88% 17%,rgba(255,139,52,.20),transparent 33%),
+  radial-gradient(ellipse at 51% 64%,rgba(126,57,235,.23),transparent 46%),
+  radial-gradient(circle,rgba(255,237,189,.32) 1px,transparent 2px),
+  linear-gradient(155deg,#1b0b34 0%,#2b0f48 36%,#160b2c 72%,#160b22 100%);
+ background-size:auto,auto,auto,110px 110px,auto;
+}
+body::before,body::after{position:fixed;z-index:0;pointer-events:none;font-size:clamp(3rem,7vw,6rem);filter:drop-shadow(0 6px 15px rgba(0,0,0,.28));opacity:.18}
+body::before{content:'☾';top:7%;left:2%;color:#ffd4ab}
+body::after{content:'✦';bottom:8%;right:3%;color:#ffa9d8}
+.wrap{position:relative;z-index:1}
+#home .hero{position:relative;overflow:hidden;border:3px solid #ffa1d7;border-radius:32px;background:linear-gradient(150deg,rgba(70,20,108,.98),rgba(44,16,89,.97) 62%,rgba(112,27,105,.95));box-shadow:0 0 0 6px rgba(255,177,220,.09),0 24px 65px rgba(14,4,38,.45)}
+#home .hero::before{content:'✦ 🎀 ✦';display:block;color:#ffd76b;font-size:1.8rem;letter-spacing:.2em;text-shadow:0 0 18px #ff8ad5;margin:0 auto 14px}
+#home .hero h1{color:#fff6e6;text-shadow:0 4px 0 #a23290,0 0 25px rgba(255,137,225,.35)}
+#home .hero>p{color:#fff0ca;font-weight:600}
+#home .hero .titleTag{color:#fff9dc;border-color:#ffc7e2;background:#a72e83;box-shadow:0 4px 0 #572265}
+#shop .shopHead,#detailPage .shopHead{position:relative;isolation:isolate;overflow:hidden;border:3px solid #ffb8dd;border-radius:31px;padding:31px 20px 27px;background:linear-gradient(120deg,#57217a,#33115c 50%,#70246e);box-shadow:0 0 0 5px rgba(255,188,216,.07),0 19px 42px rgba(8,3,27,.40),inset 0 0 32px rgba(252,102,193,.17)}
+#shop .shopHead::before,#detailPage .shopHead::before{content:'';position:absolute;left:16px;right:16px;top:10px;height:8px;border-radius:5px;background:repeating-linear-gradient(90deg,#ffd88a 0 11px,transparent 11px 22px);opacity:.78;pointer-events:none}
+#shop .shopHead::after,#detailPage .shopHead::after{content:'';position:absolute;left:16px;right:16px;bottom:10px;height:7px;border-radius:5px;background:repeating-linear-gradient(90deg,#ffa7d9 0 12px,transparent 12px 22px);opacity:.75;pointer-events:none}
+#shop .shopHead h1,#detailPage .shopHead h1{color:#fff9e8;text-shadow:0 3px 0 #a3348b,0 0 24px rgba(255,145,207,.44);font-family:Georgia,serif;letter-spacing:.01em;margin:13px auto 12px;max-width:760px;line-height:1.06}
+#shop .shopHead p,#detailPage .shopHead p{color:#ffe8cb;font-weight:600}
+#shop .shopHead .titleTag,#detailPage .shopHead .titleTag{background:#f8a5d7;border:2px solid #ffe4a6;color:#411444;box-shadow:0 4px 0 #a13f89}
+#shop .shopHead .spooky-head-icons{display:block;margin:9px 0 4px;font-size:clamp(1.5rem,4vw,2.15rem);letter-spacing:.24em;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
+#shop .shopHead .spooky-word-first{display:block;font-size:.61em;font-style:italic;color:#ffd682;text-shadow:0 2px 0 #652a6c}
+#shop .shopHead .spooky-word-second{display:block;color:#ffb6df;text-shadow:0 3px 0 #6a2877,0 0 22px #c545a6}
+#shop .shopHead .spooky-subtitle{display:inline-block;background:rgba(27,9,48,.55);border:1px solid rgba(255,206,157,.55);padding:8px 15px;border-radius:999px;margin:2px auto 12px;color:#ffe3a9;font-size:clamp(.73rem,2vw,.88rem);letter-spacing:.065em;font-weight:900}
+#shop .shopHead .spooky-footer-icons{margin-top:11px;display:block;color:#ffcadc;font-size:1.15rem;letter-spacing:.27em}
+@media(max-width:600px){
+ #shop .shopHead,#detailPage .shopHead{padding:28px 10px 25px;border-radius:22px}
+ #shop .shopHead .spooky-subtitle{padding:7px 10px;letter-spacing:0;font-size:.72rem}
+ #shop .shopHead .spooky-head-icons{letter-spacing:.1em}
+ #shop .shopHead h1{font-size:clamp(2rem,8vw,3.2rem)}
+ #home .hero::before{font-size:1.45rem}
+}
+@media(prefers-reduced-motion:reduce){#shop .shopHead *,#home .hero *{animation:none!important}}
+
 </style>
 
 <style id="vip-gate-style">
@@ -264,9 +305,9 @@
 <div class="wrap">
 <section class="page" id="home">
 <div class="shell hero">
-<span class="titleTag">Spooky VIP cinema</span>
-<h1>Choose your name<br/>and get your ticket</h1>
-<p>This version is closer to the look you showed me: a proper cinema-ticket feel, and much more realistic snack pictures for the shop.</p>
+<span class="titleTag">🎬 Spooky VIP cinema • Halloween sleepover</span>
+<h1>It's a spooky<br/>movie night! 🎃</h1>
+<p>✨ Cute tickets, spooky giggles, bestie movie vibes and delicious treats! ✨</p>
 <div class="pickBox">
 <h2>Who’s entering the cinema?</h2>
 <div class="nameRow">
@@ -314,9 +355,12 @@
 <section class="page" id="shop">
 <div class="shell">
 <div class="shopHead">
-<span class="titleTag">VIP snack shop</span>
-<h1>Movie treats</h1>
-<p>Realistic snack pictures, proper cinema style, and <b>chocolate strawberries</b> kept together as one snack.</p>
+<span class="titleTag">✦ NOW SHOWING: THE BOO CREW ✦</span>
+<span class="spooky-head-icons" aria-hidden="true">🎀 👻 🍿 🎃 🦇</span>
+<h1><span class="spooky-word-first">Spooky VIP</span><span class="spooky-word-second">SNACK SHOP!</span></h1>
+<div class="spooky-subtitle">✨ MOVIE NIGHT TREATS · HALLOWEEN SLEEPOVER ✨</div>
+<p>Grab your popcorn, pick your treats and get ready for the cutest spooky cinema night!</p>
+<span class="spooky-footer-icons" aria-hidden="true">✦ ♡ ✦ 🎬 ✦ ♡ ✦</span>
 </div><div class="wallet-strip">🎟️ VIP snack wallet<strong class="wallet-amount" data-wallet="true">30 Ghost Money</strong></div>
 <div id="shopPurchaseNotice" role="status" aria-live="polite" hidden style="margin:12px 0;padding:13px 16px;border:2px solid #f2c84b;border-radius:14px;background:#fff7ea;color:#3c2912;font-weight:900;text-align:center"></div>
 <div class="cards">
