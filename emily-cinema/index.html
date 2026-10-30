@@ -551,7 +551,12 @@ body #vipGateButton{
  #vipGateButton{display:block;margin:16px auto 0;width:100%;padding:15px;font:900 1.1rem 'Trebuchet MS',Arial,sans-serif;border-radius:15px;border:0;cursor:pointer;background:#f2c84b;color:#241b11;box-shadow:0 5px 0 #9a751c}
  #vipGateError{min-height:1.5em;color:#a32128;font-weight:800;margin:12px 0 0}
 </style>
-</head>
+<style>
+/* Plain backgrounds keep the original snack drawings unchanged. */
+#shop .cards .card{background:#fff;--card-color:#fff;--picture-color:#fff}
+#shop .cards .imgBox,#detailPage .detail-visual{background:#fff;border-bottom:0;border-right:0}
+#shop .cards .imgBox::after{display:none}
+</style></head>
 <body>
 <div id="vipPasswordGate" role="dialog" aria-modal="true" aria-labelledby="vipGateTitle">
  <form id="vipGateForm" class="vip-gate-card" autocomplete="off">
