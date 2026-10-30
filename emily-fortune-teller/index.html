@@ -174,7 +174,15 @@ body.magic .magic-beam{animation-duration:2s;background:conic-gradient(transpare
 body.reveal-burst .ball-magic-overlay{opacity:1;filter:brightness(2);box-shadow:0 0 75px 20px #c788ff;transition:filter 1.5s}
 body.reveal-burst .fortune-writing{filter:drop-shadow(0 0 14px #dcacff)}
 @media(prefers-reduced-motion:reduce){.magic-beam,.bat-flight,.bat-flight span{animation:none!important}.bat-flight{display:none}}
-</style></head><body><main class="stage"><div class="scene"><div class="atmosphere" aria-hidden="true"><div class="magic-beam"></div><div class="bat-flight" style="--y:10%;--speed:13s;--delay:-0s"><span>🦇</span></div><div class="bat-flight" style="--y:18%;--speed:16s;--delay:-4s"><span>🦇</span></div><div class="bat-flight" style="--y:26%;--speed:19s;--delay:-8s"><span>🦇</span></div><div class="bat-flight" style="--y:34%;--speed:22s;--delay:-12s"><span>🦇</span></div><div class="bat-flight" style="--y:42%;--speed:25s;--delay:-16s"><span>🦇</span></div><div class="room-fog"></div><i class="ember" style="--x:0%;--d:6s;--delay:-0.0s"></i><i class="ember" style="--x:43%;--d:7s;--delay:-0.71s"></i><i class="ember" style="--x:86%;--d:8s;--delay:-1.42s"></i><i class="ember" style="--x:29%;--d:9s;--delay:-2.13s"></i><i class="ember" style="--x:72%;--d:10s;--delay:-2.84s"></i><i class="ember" style="--x:15%;--d:11s;--delay:-3.55s"></i><i class="ember" style="--x:58%;--d:6s;--delay:-4.26s"></i><i class="ember" style="--x:1%;--d:7s;--delay:-4.97s"></i><i class="ember" style="--x:44%;--d:8s;--delay:-5.68s"></i><i class="ember" style="--x:87%;--d:9s;--delay:-6.39s"></i><i class="ember" style="--x:30%;--d:10s;--delay:-7.1s"></i><i class="ember" style="--x:73%;--d:11s;--delay:-7.81s"></i><i class="ember" style="--x:16%;--d:6s;--delay:-8.52s"></i><i class="ember" style="--x:59%;--d:7s;--delay:-9.23s"></i><i class="ember" style="--x:2%;--d:8s;--delay:-9.94s"></i><i class="ember" style="--x:45%;--d:9s;--delay:-10.649999999999999s"></i><i class="ember" style="--x:88%;--d:10s;--delay:-11.36s"></i><i class="ember" style="--x:31%;--d:11s;--delay:-12.07s"></i><i class="ember" style="--x:74%;--d:6s;--delay:-12.78s"></i><i class="ember" style="--x:17%;--d:7s;--delay:-13.489999999999998s"></i><i class="ember" style="--x:60%;--d:8s;--delay:-14.2s"></i><i class="ember" style="--x:3%;--d:9s;--delay:-14.91s"></i><i class="candle-glow" style="--x:2%;--y:55%;--delay:-0.1s"></i><i class="candle-glow" style="--x:10%;--y:35%;--delay:-0.5s"></i><i class="candle-glow" style="--x:61%;--y:6%;--delay:-3.05s"></i><i class="candle-glow" style="--x:89%;--y:36%;--delay:-4.45s"></i><i class="candle-glow" style="--x:94%;--y:63%;--delay:-4.7s"></i></div>
+
+/* A moonlit breeze outside the window, with no extra characters. */
+.window-breeze{position:absolute;right:2%;top:0;width:23%;height:46%;overflow:hidden;opacity:.45;mix-blend-mode:screen;pointer-events:none;background:radial-gradient(ellipse at 70% 25%,#b3c9ff30,transparent 60%);animation:moonBreeze 9s ease-in-out infinite alternate}
+.window-breeze:before,.window-breeze:after{content:'';position:absolute;inset:5% -60%;background:linear-gradient(165deg,transparent 35%,#c3cfff2b 48%,transparent 58%);filter:blur(9px);animation:outsideCloud 17s ease-in-out infinite alternate}
+.window-breeze:after{animation-delay:-8s;animation-duration:23s;opacity:.5}
+@keyframes outsideCloud{from{transform:translateX(-20%) translateY(-4%)}to{transform:translateX(20%) translateY(8%)}}
+@keyframes moonBreeze{from{opacity:.25}to{opacity:.6}}
+@media(prefers-reduced-motion:reduce){.window-breeze,.window-breeze:before,.window-breeze:after{animation:none!important}}
+</style></head><body><main class="stage"><div class="scene"><div class="atmosphere" aria-hidden="true"><div class="magic-beam"></div><div class="window-breeze"></div><div class="room-fog"></div><i class="ember" style="--x:0%;--d:6s;--delay:-0.0s"></i><i class="ember" style="--x:43%;--d:7s;--delay:-0.71s"></i><i class="ember" style="--x:86%;--d:8s;--delay:-1.42s"></i><i class="ember" style="--x:29%;--d:9s;--delay:-2.13s"></i><i class="ember" style="--x:72%;--d:10s;--delay:-2.84s"></i><i class="ember" style="--x:15%;--d:11s;--delay:-3.55s"></i><i class="ember" style="--x:58%;--d:6s;--delay:-4.26s"></i><i class="ember" style="--x:1%;--d:7s;--delay:-4.97s"></i><i class="ember" style="--x:44%;--d:8s;--delay:-5.68s"></i><i class="ember" style="--x:87%;--d:9s;--delay:-6.39s"></i><i class="ember" style="--x:30%;--d:10s;--delay:-7.1s"></i><i class="ember" style="--x:73%;--d:11s;--delay:-7.81s"></i><i class="ember" style="--x:16%;--d:6s;--delay:-8.52s"></i><i class="ember" style="--x:59%;--d:7s;--delay:-9.23s"></i><i class="ember" style="--x:2%;--d:8s;--delay:-9.94s"></i><i class="ember" style="--x:45%;--d:9s;--delay:-10.649999999999999s"></i><i class="ember" style="--x:88%;--d:10s;--delay:-11.36s"></i><i class="ember" style="--x:31%;--d:11s;--delay:-12.07s"></i><i class="ember" style="--x:74%;--d:6s;--delay:-12.78s"></i><i class="ember" style="--x:17%;--d:7s;--delay:-13.489999999999998s"></i><i class="ember" style="--x:60%;--d:8s;--delay:-14.2s"></i><i class="ember" style="--x:3%;--d:9s;--delay:-14.91s"></i><i class="candle-glow" style="--x:2%;--y:55%;--delay:-0.1s"></i><i class="candle-glow" style="--x:10%;--y:35%;--delay:-0.5s"></i><i class="candle-glow" style="--x:61%;--y:6%;--delay:-3.05s"></i><i class="candle-glow" style="--x:89%;--y:36%;--delay:-4.45s"></i><i class="candle-glow" style="--x:94%;--y:63%;--delay:-4.7s"></i></div>
 <div class="window" aria-hidden="true"></div><div class="candle left" aria-hidden="true"></div><div class="candle right" aria-hidden="true"></div>
 <h1>The Enchanted Fortune Teller</h1>
 <div class="ball-wrap" aria-hidden="true"><div class="ball"><div class="mist"></div><div class="mist second"></div><span class="star s1">✦</span><span class="star s2">✧</span><span class="star s3">✦</span></div></div>
@@ -214,7 +222,7 @@ function reveal(){
  const index=nextFortune;
  const entry=fortunes[index];
  if(!entry)return;
- revealSound();speakCommand();
+
  document.body.classList.add('reveal-burst');
  setTimeout(()=>document.body.classList.remove('reveal-burst'),2200);
  fortuneName.textContent=entry[0];fortuneTime.textContent=entry[1];
@@ -288,26 +296,24 @@ function whoosh(){
  }catch(e){}
 }
 
-function speakCommand(){
- if(!('speechSynthesis' in window))return;
- try{const synth=window.speechSynthesis;synth.cancel();
- const u=new SpeechSynthesisUtterance('Your wish is my command.');
- const voices=synth.getVoices();
- u.voice=voices.find(v=>/serena|samantha|karen|zoe/i.test(v.name)&&/^en/i.test(v.lang))||voices.find(v=>/^en-GB/i.test(v.lang))||null;
- u.lang='en-GB';u.rate=.82;u.pitch=.9;u.volume=1;
- window.fortuneCommand=u;synth.speak(u);synth.resume();}catch(e){}
+let birdsTimer=null;
+function startBirds(){
+ clearTimeout(birdsTimer);
+ function chirp(){
+  if(!desired||magicRunning||!audio)return;
+  try{const c=audio,t=c.currentTime;
+   for(let i=0;i<3;i++){const o=c.createOscillator(),g=c.createGain(),at=t+i*.17;
+    o.type='sine';o.frequency.setValueAtTime(1700+i*180,at);o.frequency.exponentialRampToValueAtTime(2900+i*100,at+.065);o.frequency.exponentialRampToValueAtTime(1900,at+.13);
+    g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.025,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+.14);
+    o.connect(g);g.connect(c.destination);o.start(at);o.stop(at+.15);
+   }
+  }catch(e){}
+  birdsTimer=setTimeout(chirp,3000+Math.random()*4000);
+ }
+ birdsTimer=setTimeout(chirp,650);
 }
-function revealSound(){
- try{if(!audio)return;const c=audio,t=c.currentTime,master=c.createDynamicsCompressor();master.threshold.value=-10;master.ratio.value=12;master.connect(c.destination);
- // Deep impact followed by a shimmering rising chord.
- const o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(135,t);o.frequency.exponentialRampToValueAtTime(35,t+.9);g.gain.setValueAtTime(.65,t);g.gain.exponentialRampToValueAtTime(.001,t+1.5);o.connect(g);g.connect(master);o.start(t);o.stop(t+1.5);
- [261.63,392,523.25,783.99].forEach((f,i)=>{const n=c.createOscillator(),v=c.createGain();n.type='sine';n.frequency.value=f;const start=t+i*.085;v.gain.setValueAtTime(.001,start);v.gain.exponentialRampToValueAtTime(.15,start+.03);v.gain.exponentialRampToValueAtTime(.001,start+2.2);n.connect(v);v.connect(master);n.start(start);n.stop(start+2.3)});
- const b=c.createBuffer(1,c.sampleRate*1.5,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
- const n=c.createBufferSource(),f=c.createBiquadFilter(),v=c.createGain();n.buffer=b;f.type='lowpass';f.frequency.value=900;v.gain.setValueAtTime(.38,t);v.gain.exponentialRampToValueAtTime(.001,t+1.5);n.connect(f);f.connect(v);v.connect(master);n.start(t);
- }catch(e){}
-}
-
 function stop(){
+ clearTimeout(birdsTimer);
  desired=false;started=false;starting=false;session++;
  heardParts=[];clearTimeout(retry);
  btn.classList.remove('listening');btn.setAttribute('aria-label','Start listening');
@@ -334,7 +340,7 @@ function listen(){
   r.lang='en-GB';r.continuous=true;r.interimResults=true;r.maxAlternatives=5;
   r.onstart=()=>{
    if(id!==session||!desired){try{r.abort()}catch(e){}return}
-   starting=false;started=true;btn.classList.add('listening');info('Listening… say Ziggy Ziggy Zaggy Zee');
+   starting=false;started=true;btn.classList.add('listening');info('');startBirds();
   };
   r.onresult=e=>{
    if(id!==session||!desired)return;
