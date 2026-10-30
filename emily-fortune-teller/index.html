@@ -185,9 +185,10 @@ function findVoice(){
  if(!('speechSynthesis' in window))return null;
  const voices=window.speechSynthesis.getVoices();
  const english=voices.filter(v=>/^en(?:-|_)/i.test(v.lang));
- const preferred=['serena','martha','kate','moira','samantha','tessa','victoria','karen','susan','female'];
- return english.find(v=>preferred.some(n=>v.name.toLowerCase().includes(n)))||
-        english.find(v=>/^en-GB/i.test(v.lang))||english[0]||voices[0]||null;
+ // Prefer the two voices chosen on the iPad, with Serena first.
+ const serena=english.find(v=>v.name.toLowerCase().includes('serena'));
+ const zoe=english.find(v=>v.name.toLowerCase().includes('zoe'));
+ return serena||zoe||english.find(v=>/^en-GB/i.test(v.lang))||english[0]||voices[0]||null;
 }
 function primeVoice(){
  // Safari may require speech output to be unlocked by a direct user tap.
@@ -213,7 +214,7 @@ function speakFirstFortune(){
   const voice=findVoice();
   if(voice)voiceLine.voice=voice;
   voiceLine.lang=voice?.lang||'en-GB';
-  voiceLine.rate=.79;voiceLine.pitch=.84;voiceLine.volume=1;
+  voiceLine.rate=.88;voiceLine.pitch=1.04;voiceLine.volume=1;
   currentUtterance=voiceLine;
   voiceLine.onstart=()=>{hearButton.textContent='Hear her voice again';};
   voiceLine.onerror=()=>{hearButton.textContent='Tap to hear her voice';};
