@@ -166,10 +166,10 @@
  <form id="vipGateForm" class="vip-gate-card" autocomplete="off">
   <div style="font-size:2rem" aria-hidden="true">🎀 🎟️ 🍿</div>
   <div style="letter-spacing:.12em;font-weight:900;color:#986e20;font-size:.8rem">SPOOKY VIP CINEMA</div>
-  <h1 id="vipGateTitle">VIP Entry Only</h1>
-  <p>Enter your special code to enter the cinema!</p>
-  <label for="vipCodeInput">VIP access code</label>
-  <input id="vipCodeInput" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="4-digit code" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+  <h1 id="vipGateTitle">Enter Your Password</h1>
+  <p>Enter your password to open your VIP cinema!</p>
+  <label for="vipCodeInput">Password</label>
+  <input id="vipCodeInput" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="Enter password" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
   <button id="vipGateButton" type="submit">🎟️ Enter the Cinema</button>
   <div id="vipGateError" role="status" aria-live="polite"></div>
  </form>
@@ -192,7 +192,7 @@
  form.addEventListener('submit',function(event){
   event.preventDefault();
   if(input.value==='1359'){unlock();input.value='';}
-  else{error.textContent='That code is not quite right. Try again!';input.value='';input.focus();}
+  else{error.textContent='That password is not quite right. Try again!';input.value='';input.focus();}
  });
 })();
 </script>
