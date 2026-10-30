@@ -229,7 +229,7 @@ function reveal(){
  writing.classList.add('revealed');
  nextFortune++;
  try{sessionStorage.setItem(progressKey,String(nextFortune))}catch(e){}
- lastFortuneIndex=index;
+
 
 }
 function info(t){status.textContent=t||''}
@@ -308,10 +308,13 @@ function stop(){
 }
 function magic(){
  if(magicRunning)return;
- magicRunning=true;stop();info('');
+ magicRunning=true;stop();btn.disabled=true;info('');
  writing.classList.remove('revealed');
  document.body.classList.add('magic');whoosh();
- setTimeout(()=>{document.body.classList.remove('magic');reveal();magicRunning=false},3500);
+ setTimeout(()=>{
+  document.body.classList.remove('magic');
+  try{reveal()}finally{magicRunning=false;btn.disabled=false;btn.setAttribute('aria-label','Reveal next activity with the magic spell')}
+ },3500);
 }
 function scheduleRestart(id,delay){
  if(!desired||magicRunning||id!==session)return;
@@ -357,7 +360,7 @@ function listen(){
  }catch(e){starting=false;scheduleRestart(id,550)}
 }
 if(!Recognition){btn.disabled=true;info('Speech recognition unavailable. Try Safari on your iPad.');return}
-btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;armedAt=Date.now();startBirds();heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
+btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;if(nextFortune>=fortunes.length){info('Your magical evening is complete!');return}desired=true;session++;armedAt=Date.now();startBirds();heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&desired)stop()});
 })();
 </script></body></html>
