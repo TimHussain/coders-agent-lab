@@ -423,14 +423,18 @@
    grouped.set(key,existing);
   });
   const lines=Array.from(grouped.values()).map(p=>{
-   const grams=p.id==='nerds'||p.id==='worms'?' ('+(p.quantity*10)+'g)':p.id==='chocolate'?' ('+(p.quantity*30)+'g)':'';
-   return '• '+p.name+' × '+p.quantity+grams+' — '+fmtGhost(p.total)+' Ghost Money';
+    const count=p.quantity;
+    const singular={drpepper:'can',popcorn:'portion',strawberries:'serving',juice:'drink'};
+    let amount;
+    if(p.id==='nerds'||p.id==='worms')amount=(count*10)+'g';
+    else if(p.id==='chocolate')amount=(count*30)+'g';
+    else {const unit=singular[p.id]||'portion';amount=count+' '+unit+(count===1?'':'s');}
+    return '• '+p.name+' — '+amount;
   });
   const message='🎟️ SPOOKY VIP CINEMA ORDER\nGuest: '+name()+
     '\n\n'+lines.join('\n')+
     '\n\nTotal spent: '+fmtWallet(data.spent)+
-    '\nRemaining: '+fmtWallet(available())+
-    '\n\nPlease prepare these treats! 🍿';
+    '\n\nPlease prepare these sweet treats! 🍿';
   // A recipient is prefilled, but Messages still requires the guest to press Send.
   const recipient='+447385680153';
   const separator=/iPhone|iPad|iPod/i.test(navigator.userAgent)?'&body=':'?body=';
