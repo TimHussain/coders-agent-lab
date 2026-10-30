@@ -833,7 +833,7 @@ body #vipGateButton{
   const p=items[activeId];const c=selectedCard();
   $('detailName').textContent=c.querySelector('h3').textContent;
   $('detailDescription').textContent=c.querySelector('.desc').textContent;
-  $('bigSnackImage').src=c.querySelector('.imgBox img').src;
+  $('bigSnackImage').src=c.querySelector('.imgBox img:not(.bow)').src;
   $('bigSnackImage').alt=c.querySelector('h3').textContent;
   $('detailPrice').textContent=fmtPounds(p.price);
   $('detailUnit').textContent='per '+p.unit;
