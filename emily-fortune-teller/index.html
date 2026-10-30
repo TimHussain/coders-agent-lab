@@ -146,7 +146,21 @@ body.magic .scene .ball-magic-overlay{animation:orbPulse .7s ease-in-out 5}
 .scene .voice-panel select{color:#fff1ff;background:#29143edc;border:2px solid #d8a8fa;border-radius:20px;padding:9px 12px;font:600 13px system-ui,sans-serif}
 .scene .voice-panel .hear-fortune{position:static;transform:none;white-space:nowrap;padding:9px 13px}
 @media(max-width:650px){.scene .voice-panel{top:128%;gap:4px}.scene .voice-panel select,.scene .voice-panel .hear-fortune{font-size:11px;padding:6px 8px}}
-</style></head><body><main class="stage"><div class="scene">
+
+/* Living room atmosphere: drifting fog, rising sparks and candle glows. */
+.scene{overflow:hidden}
+.atmosphere{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.room-fog{position:absolute;left:-25%;bottom:-12%;width:150%;height:38%;background:radial-gradient(ellipse at 25% 60%,#bc78ff40,transparent 42%),radial-gradient(ellipse at 70% 70%,#945bda48,transparent 46%);filter:blur(22px);animation:roomDrift 12s ease-in-out infinite alternate}
+.ember{position:absolute;left:var(--x);bottom:3%;width:3px;height:3px;border-radius:50%;background:#f9d5ff;box-shadow:0 0 9px 3px #b75aff;opacity:0;animation:emberRise var(--d) linear infinite;animation-delay:var(--delay)}
+.candle-glow{position:absolute;width:12%;height:27%;top:var(--y);left:var(--x);background:radial-gradient(ellipse,#ffbd6650,transparent 65%);mix-blend-mode:screen;animation:candleGlow 2.3s ease-in-out infinite alternate;animation-delay:var(--delay)}
+@keyframes roomDrift{from{transform:translateX(-6%) scaleY(.9)}to{transform:translateX(6%) scaleY(1.2)}}
+@keyframes emberRise{0%{opacity:0;transform:translate(0,0)}15%,65%{opacity:.7}100%{opacity:0;transform:translate(30px,-48vh)}}
+@keyframes candleGlow{from{opacity:.35;transform:scale(.9)}to{opacity:.85;transform:scale(1.12)}}
+body.magic .room-fog{animation-duration:1.5s;filter:blur(15px);opacity:1.7}
+body.magic .ember{animation-duration:1.5s;box-shadow:0 0 13px 5px #cd7bff}
+body.magic .ball-magic-overlay{box-shadow:0 0 45px #c573ff}
+@media(prefers-reduced-motion:reduce){.room-fog,.ember,.candle-glow{animation:none!important}.ember{display:none}}
+</style></head><body><main class="stage"><div class="scene"><div class="atmosphere" aria-hidden="true"><div class="room-fog"></div><i class="ember" style="--x:0%;--d:6s;--delay:-0.0s"></i><i class="ember" style="--x:43%;--d:7s;--delay:-0.71s"></i><i class="ember" style="--x:86%;--d:8s;--delay:-1.42s"></i><i class="ember" style="--x:29%;--d:9s;--delay:-2.13s"></i><i class="ember" style="--x:72%;--d:10s;--delay:-2.84s"></i><i class="ember" style="--x:15%;--d:11s;--delay:-3.55s"></i><i class="ember" style="--x:58%;--d:6s;--delay:-4.26s"></i><i class="ember" style="--x:1%;--d:7s;--delay:-4.97s"></i><i class="ember" style="--x:44%;--d:8s;--delay:-5.68s"></i><i class="ember" style="--x:87%;--d:9s;--delay:-6.39s"></i><i class="ember" style="--x:30%;--d:10s;--delay:-7.1s"></i><i class="ember" style="--x:73%;--d:11s;--delay:-7.81s"></i><i class="ember" style="--x:16%;--d:6s;--delay:-8.52s"></i><i class="ember" style="--x:59%;--d:7s;--delay:-9.23s"></i><i class="ember" style="--x:2%;--d:8s;--delay:-9.94s"></i><i class="ember" style="--x:45%;--d:9s;--delay:-10.649999999999999s"></i><i class="ember" style="--x:88%;--d:10s;--delay:-11.36s"></i><i class="ember" style="--x:31%;--d:11s;--delay:-12.07s"></i><i class="ember" style="--x:74%;--d:6s;--delay:-12.78s"></i><i class="ember" style="--x:17%;--d:7s;--delay:-13.489999999999998s"></i><i class="ember" style="--x:60%;--d:8s;--delay:-14.2s"></i><i class="ember" style="--x:3%;--d:9s;--delay:-14.91s"></i><i class="candle-glow" style="--x:2%;--y:55%;--delay:-0.1s"></i><i class="candle-glow" style="--x:10%;--y:35%;--delay:-0.5s"></i><i class="candle-glow" style="--x:61%;--y:6%;--delay:-3.05s"></i><i class="candle-glow" style="--x:89%;--y:36%;--delay:-4.45s"></i><i class="candle-glow" style="--x:94%;--y:63%;--delay:-4.7s"></i></div>
 <div class="window" aria-hidden="true"></div><div class="candle left" aria-hidden="true"></div><div class="candle right" aria-hidden="true"></div>
 <h1>The Enchanted Fortune Teller</h1>
 <div class="ball-wrap" aria-hidden="true"><div class="ball"><div class="mist"></div><div class="mist second"></div><span class="star s1">✦</span><span class="star s2">✧</span><span class="star s3">✦</span></div></div>
@@ -158,7 +172,7 @@ body.magic .scene .ball-magic-overlay{animation:orbPulse .7s ease-in-out 5}
 </div>
 <div class="controls"><button id="mic" class="mic" type="button" aria-label="Start listening for the secret magic spell" title="Listen for magic">
 <svg viewBox="0 0 48 48"><rect x="17" y="6" width="14" height="25" rx="7"></rect><path d="M11 22v3a13 13 0 0 0 26 0v-3M24 38v6M16 44h16"></path></svg></button>
-<div id="status" class="status" role="status" aria-live="polite"></div><div class="voice-panel"><select id="voiceChoice" aria-label="Choose female fortune teller voice"><option value="serena">Serena</option><option value="zoe">Zoe</option></select><button id="hearFortune" class="hear-fortune" type="button" aria-label="Play a sample of the fortune teller voice">▶ Test voice</button></div></div>
+<div id="status" class="status" role="status" aria-live="polite"></div></div>
 </div></main><script>
 (function(){
 'use strict';
@@ -182,51 +196,6 @@ const fortuneTime=document.getElementById('fortune-time');
 const progressKey='emily-fortune-next-v4';
 let nextFortune=0;
 try{const saved=Number(sessionStorage.getItem(progressKey));if(Number.isInteger(saved)&&saved>=0&&saved<=fortunes.length)nextFortune=saved}catch(e){}
-// Voice practice: try automatic speech, plus a user-tapped replay for iPad Safari.
-const fortuneLines=[
- 'Ahhh... the crystal ball has spoken. On this mysterious Halloween night, your destiny awaits. It is time to discover your Boo Baskets.',
- 'The mist parts... and a delicious mystery appears. Your next adventure awaits... a magical cup of boba.',
- 'The stars are changing. Gather your things, for it is time to get ready for the night ahead.',
- 'A delicious vision appears in the crystal. Tonight, your fate leads you to... pizza!',
- 'A glow rises from the shadows. Now it is time to carve your pumpkins.',
- 'The moon is high... and a sweet adventure calls. Prepare yourselves for trick or treating!',
- 'I hear music drifting through the darkness. Your next destiny... is karaoke!',
- 'The crystal whispers of a story on the screen. Gather close... it is movie time.',
- 'The magic grows quiet... but your night is not over. Welcome to your enchanted sleepover.'
-];
-const hearButton=document.getElementById('hearFortune');
-const voiceChoice=document.getElementById('voiceChoice');
-let currentUtterance=null,voiceUnlocked=false,lastFortuneIndex=-1;
-function findVoice(){
- if(!('speechSynthesis' in window))return null;
- const voices=window.speechSynthesis.getVoices();
- const name=voiceChoice.value;
- const candidates=voices.filter(v=>/^en(?:-|_)/i.test(v.lang));
- return candidates.find(v=>v.name.toLowerCase().includes(name))||null;
-}
-function speakLine(index){
- if(!('speechSynthesis' in window)){info('Speech playback is unavailable in this browser.');return}
- const voice=findVoice();
- if(!voice){info(voiceChoice.value==='serena'?'Serena is not available to Safari. Try Zoe.':'Zoe is not available to Safari. Try Serena.');return}
- try{
-  const synth=window.speechSynthesis;
-  synth.cancel();
-  const u=new SpeechSynthesisUtterance(fortuneLines[Math.max(0,Math.min(index,fortuneLines.length-1))]);
-  u.voice=voice;u.lang=voice.lang;u.rate=.87;u.pitch=1.02;u.volume=1;
-  currentUtterance=u;
-  u.onstart=()=>info('');
-  u.onerror=()=>info('Voice playback was blocked. Tap Test voice again.');
-  synth.speak(u);synth.resume();
- }catch(e){info('Tap Test voice again to try playback.')}
-}
-hearButton.addEventListener('click',()=>{
- voiceUnlocked=true;
- speakLine(lastFortuneIndex>=0?lastFortuneIndex:0);
-});
-voiceChoice.addEventListener('change',()=>{if(voiceUnlocked)speakLine(lastFortuneIndex>=0?lastFortuneIndex:0)});
-function primeVoice(){
- // The voice test button supplies a direct user gesture for Safari.
-}
 function reveal(){
  const index=nextFortune;
  const entry=fortunes[index];
@@ -236,8 +205,7 @@ function reveal(){
  nextFortune++;
  try{sessionStorage.setItem(progressKey,String(nextFortune))}catch(e){}
  lastFortuneIndex=index;
- if(voiceUnlocked)speakLine(index);
- else{hearButton.textContent='▶ Hear fortune';}
+
 }
 function info(t){status.textContent=t||''}
 function norm(t){return t.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
@@ -288,11 +256,16 @@ function whoosh(){
   low.frequency.exponentialRampToValueAtTime(180,now+duration);
   const gain=c.createGain();
   gain.gain.setValueAtTime(.0001,now);
-  gain.gain.linearRampToValueAtTime(.78,now+.95);
-  gain.gain.setValueAtTime(.78,now+1.55);
+  gain.gain.linearRampToValueAtTime(1.15,now+.95);
+  gain.gain.setValueAtTime(1.15,now+1.55);
   gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
-  source.connect(high);high.connect(low);low.connect(gain);gain.connect(c.destination);
+  source.connect(high);high.connect(low);low.connect(gain);const limiter=c.createDynamicsCompressor();limiter.threshold.value=-8;limiter.ratio.value=12;gain.connect(limiter);limiter.connect(c.destination);
   source.start(now);source.stop(now+duration);
+  // Low magical rumble under the sweeping wind.
+  const rumble=c.createOscillator(),rg=c.createGain();rumble.type='sine';
+  rumble.frequency.setValueAtTime(95,now);rumble.frequency.exponentialRampToValueAtTime(38,now+duration);
+  rg.gain.setValueAtTime(.001,now);rg.gain.linearRampToValueAtTime(.28,now+.8);rg.gain.exponentialRampToValueAtTime(.001,now+duration);
+  rumble.connect(rg);rg.connect(limiter);rumble.start(now);rumble.stop(now+duration);
  }catch(e){}
 }
 function stop(){
@@ -361,7 +334,7 @@ function listen(){
  }catch(e){starting=false;scheduleRestart(id,550)}
 }
 if(!Recognition){btn.disabled=true;info('Speech recognition unavailable. Try Safari on your iPad.');return}
-btn.addEventListener('click',()=>{readySound();primeVoice();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
+btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&desired)stop()});
 })();
 </script></body></html>
