@@ -169,7 +169,7 @@
   <h1 id="vipGateTitle">VIP Entry Only</h1>
   <p>Enter your special code to enter the cinema!</p>
   <label for="vipCodeInput">VIP access code</label>
-  <input id="vipCodeInput" type="password" placeholder="Enter code" required autocapitalize="off" autocorrect="off" spellcheck="false" />
+  <input id="vipCodeInput" type="password" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="4-digit code" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
   <button id="vipGateButton" type="submit">🎟️ Enter the Cinema</button>
   <div id="vipGateError" role="status" aria-live="polite"></div>
  </form>
@@ -186,12 +186,12 @@
  function unlock(){
   if(area)area.inert=false;
   document.body.classList.add('vip-unlocked');
-  try{sessionStorage.setItem('vip-cinema-unlocked-v1','yes')}catch(e){}
+  try{sessionStorage.setItem('vip-cinema-unlocked-v2','yes')}catch(e){}
  }
- try{if(sessionStorage.getItem('vip-cinema-unlocked-v1')==='yes'){unlock();return}}catch(e){}
+ try{if(sessionStorage.getItem('vip-cinema-unlocked-v2')==='yes'){unlock();return}}catch(e){}
  form.addEventListener('submit',function(event){
   event.preventDefault();
-  if(input.value==='Halloween'){unlock();input.value='';}
+  if(input.value==='1359'){unlock();input.value='';}
   else{error.textContent='That code is not quite right. Try again!';input.value='';input.focus();}
  });
 })();
