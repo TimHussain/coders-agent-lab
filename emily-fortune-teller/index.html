@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>The Enchanted Fortune Teller</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090611;color:#f8eaff;font-family:Georgia,serif}
+body{min-height:100svh;background:radial-gradient(ellipse at 50% 32%,#3d1763 0%,#1c1033 36%,#090611 79%);overflow-x:hidden}
+.stage{position:relative;isolation:isolate;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px 38px;overflow:hidden}
+.stage:before{content:'';position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(100deg,transparent 0 92px,#a26cb009 93px 95px,transparent 96px 170px),radial-gradient(ellipse at 50% 110%,#76278d3b,transparent 65%)}
+.window{position:absolute;right:3%;top:5%;width:17vw;max-width:220px;min-width:100px;height:34vh;border:10px solid #25172b;border-radius:50% 50% 8px 8px;box-shadow:0 0 0 3px #5a3157,inset 0 0 40px #070411;background:radial-gradient(circle at 70% 27%,#b994e0 0 12%,transparent 13%),linear-gradient(#1b123a,#371e58 55%,#080710);opacity:.65}
+.window:after{content:'';position:absolute;top:0;bottom:0;left:48%;border-left:6px solid #26152e}
+.candle{position:absolute;bottom:11%;height:80px;width:20px;background:linear-gradient(90deg,#4c235a,#b35db7,#53266a);border-radius:7px 7px 3px 3px;box-shadow:0 0 30px #ce61d25e}
+.candle:before{content:'';position:absolute;width:12px;height:24px;left:4px;top:-26px;background:radial-gradient(ellipse,#fff7c3 5%,#ffa852 36%,transparent 72%);filter:drop-shadow(0 0 12px #ffaf57)}
+.candle.left{left:8%}.candle.right{right:9%;height:120px}
+h1{font-size:clamp(1rem,2vw,1.5rem);font-weight:400;letter-spacing:.23em;text-transform:uppercase;color:#e9c6f6;text-align:center;margin:0 0 12px;text-shadow:0 0 14px #ab59db}
+.ball-wrap{width:min(77vw,68vh,610px);aspect-ratio:1;position:relative;filter:drop-shadow(0 0 24px #b24cf280)}
+.ball{position:absolute;inset:3%;border-radius:50%;overflow:hidden;border:3px solid #c68af9;background:radial-gradient(circle at 36% 29%,#e2b4ff99 0%,transparent 17%),radial-gradient(ellipse at 60% 75%,#c466f9a8 0%,transparent 45%),radial-gradient(circle at 50% 45%,#501079 5%,#24043c 55%,#0b041c 90%);box-shadow:inset -20px -22px 50px #05000dc7,inset 12px 10px 35px #a756e5c9,0 0 15px #c05fff,0 0 80px #a736ec65}
+.ball:after{content:'';position:absolute;inset:4%;border-radius:50%;border-top:9px solid #eac4ff88;transform:rotate(-23deg);filter:blur(5px)}
+.mist{position:absolute;inset:12%;border-radius:46%;background:conic-gradient(from 40deg,transparent,#c95bfa66,transparent,#9b32e5a8,transparent,#edb6ff6b,transparent);filter:blur(22px);animation:swirl 11s linear infinite;mix-blend-mode:screen}
+.mist.second{inset:22%;animation-duration:8s;animation-direction:reverse;filter:blur(17px);opacity:.9}
+.star{position:absolute;color:#f3d4ff;text-shadow:0 0 14px white;font-size:clamp(13px,2vw,24px);animation:twinkle 2.6s ease-in-out infinite alternate}
+.s1{top:21%;left:30%}.s2{top:43%;right:24%;animation-delay:.7s}.s3{bottom:26%;left:41%;animation-delay:1.3s}
+.stand{height:35px;width:65%;margin:-7px auto 10px;background:linear-gradient(#ab6d9f,#3a153e 48%,#120a21);border:3px solid #a57a86;border-radius:50%;box-shadow:0 12px 20px #000}
+.controls{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:-5px;z-index:2}
+.mic{width:92px;height:92px;border-radius:50%;border:3px solid #d29aff;background:radial-gradient(circle at 40% 30%,#8c4bb7,#341050 80%);color:#fff;box-shadow:0 0 0 7px #5c2c8260,0 0 28px #ad65f6;cursor:pointer;display:grid;place-items:center;touch-action:manipulation}
+.mic svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.mic:focus-visible{outline:4px solid white;outline-offset:9px}.mic:disabled{opacity:.6;cursor:not-allowed}
+.mic.listening{animation:pulse 1s ease-in-out infinite alternate}
+.status{font:600 clamp(16px,2vw,21px)/1.4 system-ui,sans-serif;text-align:center;min-height:52px;max-width:540px;color:#f3defb;text-shadow:0 2px 8px #14071c}
+.small{font:13px/1.5 system-ui,sans-serif;text-align:center;color:#c7b5d3;max-width:520px}
+body.magic .ball{animation:success .7s ease-in-out 3;box-shadow:0 0 45px #f1b4ff,0 0 120px #c15fff,inset 0 0 65px #efc7ff}
+body.magic .mist{animation-duration:1.1s}
+@keyframes swirl{to{transform:rotate(360deg)}}@keyframes twinkle{to{opacity:.25;transform:scale(.7)}}@keyframes pulse{to{box-shadow:0 0 0 17px #8c4abb66,0 0 55px #e0a0ff}}@keyframes success{50%{filter:brightness(2)}}
+@media(max-height:680px){.ball-wrap{width:min(60vw,53vh,430px)}.mic{width:70px;height:70px}.mic svg{width:34px;height:34px}.stage{padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){.mist,.star,.mic.listening,.magic .ball{animation:none!important}}
+</style></head><body><main class="stage">
+<div class="window" aria-hidden="true"></div><div class="candle left" aria-hidden="true"></div><div class="candle right" aria-hidden="true"></div>
+<h1>The Enchanted Fortune Teller</h1>
+<div class="ball-wrap" aria-hidden="true"><div class="ball"><div class="mist"></div><div class="mist second"></div><span class="star s1">✦</span><span class="star s2">✧</span><span class="star s3">✦</span></div></div>
+<div class="stand" aria-hidden="true"></div>
+<div class="controls"><button id="mic" class="mic" type="button" aria-label="Start listening for the secret magic spell" title="Listen for magic">
+<svg viewBox="0 0 48 48"><rect x="17" y="6" width="14" height="25" rx="7"></rect><path d="M11 22v3a13 13 0 0 0 26 0v-3M24 38v6M16 44h16"></path></svg></button>
+<div id="status" class="status" role="status" aria-live="polite">Tap the microphone when you're ready.</div>
+<div class="small">The spell is secret. Only a recognised spell will awaken the crystal ball.</div></div>
+</main><script>
+(function(){
+'use strict';
+const btn=document.getElementById('mic'),status=document.getElementById('status');
+const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let recognition=null,active=false,matched=false,magicTimer=null;
+function say(s){status.textContent=s}
+function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()}
+function isSpell(raw){
+ const words=norm(raw).split(' ');
+ // Accept minor speech-to-text spelling variants; require all parts in order.
+ const ziggy=['ziggy','ziggie','ziggi','zigi'];
+ const zaggy=['zaggy','zaggy','zacky','zaggi','zaki','zaggy','zagy'];
+ const zee=['zee','z','see','zi'];
+ const i=words.findIndex(w=>ziggy.includes(w));
+ if(i<0||!ziggy.includes(words[i+1]||''))return false;
+ if(!zaggy.includes(words[i+2]||'')||!zee.includes(words[i+3]||''))return false;
+ const rest=words.slice(i+4).join(' ');
+ return /(?:what|whats|what s).*(?:our|are).*(?:fate|faith).*(?:be|bee)/.test(rest);
+}
+function magic(){
+ matched=true;active=false;btn.classList.remove('listening');
+ document.body.classList.add('magic');
+ say('✦ The secret spell has been recognised! ✦');
+ clearTimeout(magicTimer);magicTimer=setTimeout(()=>document.body.classList.remove('magic'),2400);
+ // This first test deliberately does not reveal any activity.
+}
+if(!Recognition){say('This browser cannot recognise speech here. Please open the link in Safari and try again.');btn.disabled=true;return;}
+btn.addEventListener('click',()=>{
+ if(active){recognition&&recognition.stop();active=false;btn.classList.remove('listening');say('Listening stopped. Tap to try again.');return;}
+ matched=false;recognition=new Recognition();recognition.lang='en-GB';recognition.continuous=false;recognition.interimResults=false;recognition.maxAlternatives=5;
+ recognition.onstart=()=>{active=true;btn.classList.add('listening');say('Listening… say the secret spell!')};
+ recognition.onresult=(e)=>{
+  let heard=[];
+  for(let j=e.resultIndex;j<e.results.length;j++)for(let k=0;k<e.results[j].length;k++)heard.push(e.results[j][k].transcript);
+  if(heard.some(isSpell)){magic();recognition.stop();}
+  else{say('The crystal ball remains silent. Try the spell again.');}
+ };
+ recognition.onerror=e=>{
+  active=false;btn.classList.remove('listening');
+  if(e.error==='not-allowed'||e.error==='service-not-allowed')say('Microphone blocked. In Safari, allow microphone access for this website.');
+  else if(e.error==='no-speech')say('I couldn’t hear anything. Tap the microphone and try again.');
+  else say('Microphone problem ('+e.error+'). Please try again in Safari.');
+ };
+ recognition.onend=()=>{active=false;btn.classList.remove('listening');if(!matched&&status.textContent.startsWith('Listening'))say('I didn’t catch the spell. Tap to try again.')};
+ try{recognition.start()}catch(e){active=false;say('Could not start the microphone. Please try again in Safari.')}
+});
+})();
+</script></body></html>
