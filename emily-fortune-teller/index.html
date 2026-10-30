@@ -137,6 +137,10 @@ body.magic .scene .ball-magic-overlay{animation:orbPulse .7s ease-in-out 5}
  body.magic .scene .cloud-one,body.magic .scene .cloud-two,body.magic .scene .cloud-three,
  body.magic .scene .magic-sparkles{animation:none!important}
 }
+
+.scene .hear-fortune{position:absolute;top:125%;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:15;background:#32154deb;border:2px solid #d8a8fa;border-radius:24px;padding:9px 17px;color:#fff1ff;font:600 13px system-ui,sans-serif;cursor:pointer;box-shadow:0 0 17px #ad4bd080}
+.scene .hear-fortune[hidden]{display:none!important}
+.scene .hear-fortune:focus-visible{outline:3px solid white;outline-offset:3px}
 </style></head><body><main class="stage"><div class="scene">
 <div class="window" aria-hidden="true"></div><div class="candle left" aria-hidden="true"></div><div class="candle right" aria-hidden="true"></div>
 <h1>The Enchanted Fortune Teller</h1>
@@ -149,7 +153,7 @@ body.magic .scene .ball-magic-overlay{animation:orbPulse .7s ease-in-out 5}
 </div>
 <div class="controls"><button id="mic" class="mic" type="button" aria-label="Start listening for the secret magic spell" title="Listen for magic">
 <svg viewBox="0 0 48 48"><rect x="17" y="6" width="14" height="25" rx="7"></rect><path d="M11 22v3a13 13 0 0 0 26 0v-3M24 38v6M16 44h16"></path></svg></button>
-<div id="status" class="status" role="status" aria-live="polite"></div></div>
+<div id="status" class="status" role="status" aria-live="polite"></div><button id="hearFortune" class="hear-fortune" type="button" hidden aria-label="Hear the fortune teller's announcement again">Hear her voice</button></div>
 </div></main><script>
 (function(){
 'use strict';
@@ -170,12 +174,13 @@ const fortunes=[
 const writing=document.getElementById('fortune-writing');
 const fortuneName=document.getElementById('fortune-name');
 const fortuneTime=document.getElementById('fortune-time');
-const progressKey='emily-fortune-next-v2';
+const progressKey='emily-fortune-next-v3';
 let nextFortune=0;
 try{const saved=Number(sessionStorage.getItem(progressKey));if(Number.isInteger(saved)&&saved>=0&&saved<=fortunes.length)nextFortune=saved}catch(e){}
-// First announcement is a voice practice. Later fortunes stay silent until approved.
+// Voice practice: try automatic speech, plus a user-tapped replay for iPad Safari.
 const practiceLine='Ahhh... the crystal ball has spoken. On this mysterious Halloween night... your first destiny awaits. It is time... to discover your Boo Baskets.';
-let preferredVoice=null;
+const hearButton=document.getElementById('hearFortune');
+let currentUtterance=null,voiceWasPrimed=false,voiceAttempt=0;
 function findVoice(){
  if(!('speechSynthesis' in window))return null;
  const voices=window.speechSynthesis.getVoices();
@@ -184,19 +189,46 @@ function findVoice(){
  return english.find(v=>preferred.some(n=>v.name.toLowerCase().includes(n)))||
         english.find(v=>/^en-GB/i.test(v.lang))||english[0]||voices[0]||null;
 }
-function speakFirstFortune(){
- if(!('speechSynthesis' in window))return;
+function primeVoice(){
+ // Safari may require speech output to be unlocked by a direct user tap.
+ if(voiceWasPrimed||!('speechSynthesis' in window))return;
+ voiceWasPrimed=true;
  try{
-  window.speechSynthesis.cancel();
-  const voiceLine=new SpeechSynthesisUtterance(practiceLine);
-  preferredVoice=findVoice();
-  if(preferredVoice)voiceLine.voice=preferredVoice;
-  voiceLine.lang=preferredVoice?.lang||'en-GB';
-  voiceLine.rate=.79;
-  voiceLine.pitch=.84;
-  voiceLine.volume=1;
-  window.speechSynthesis.speak(voiceLine);
+  const warmup=new SpeechSynthesisUtterance(' ');
+  warmup.volume=0;warmup.rate=1;warmup.lang='en-GB';
+  window.speechSynthesis.speak(warmup);
+  window.speechSynthesis.resume();
  }catch(e){}
+}
+function speakFirstFortune(){
+ if(!('speechSynthesis' in window)){
+  hearButton.textContent='Voice unavailable on this browser';
+  hearButton.hidden=false;
+  return;
+ }
+ try{
+  const synth=window.speechSynthesis;
+  synth.cancel();
+  const voiceLine=new SpeechSynthesisUtterance(practiceLine);
+  const voice=findVoice();
+  if(voice)voiceLine.voice=voice;
+  voiceLine.lang=voice?.lang||'en-GB';
+  voiceLine.rate=.79;voiceLine.pitch=.84;voiceLine.volume=1;
+  currentUtterance=voiceLine;
+  voiceLine.onstart=()=>{hearButton.textContent='Hear her voice again';};
+  voiceLine.onerror=()=>{hearButton.textContent='Tap to hear her voice';};
+  synth.speak(voiceLine);
+  synth.resume();
+  hearButton.hidden=false;
+ }catch(e){hearButton.hidden=false;hearButton.textContent='Tap to hear her voice';}
+}
+hearButton.addEventListener('click',()=>{
+ primeVoice();
+ if('speechSynthesis' in window){window.speechSynthesis.cancel();window.speechSynthesis.resume();}
+ speakFirstFortune();
+});
+if('speechSynthesis' in window&&window.speechSynthesis.onvoiceschanged!==undefined){
+ window.speechSynthesis.addEventListener('voiceschanged',()=>{findVoice()});
 }
 function reveal(){
  const index=nextFortune;
@@ -243,24 +275,22 @@ function spell(raw){
 }
 function readySound(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;if(!audio)audio=new A();if(audio.state==='suspended')audio.resume()}catch(e){}}
 function whoosh(){
- // One continuous, smooth magical wind sweep. No separate beeps or chimes.
+ // A single dramatic sweeping wind effect; no beeps, bells or double chimes.
  try{
   if(!audio)return;
-  const c=audio,duration=3.05,now=c.currentTime;
-  const len=Math.floor(c.sampleRate*duration),buffer=c.createBuffer(1,len,c.sampleRate),samples=buffer.getChannelData(0);
-  // Smoothly filtered white noise gives the wind a soft, sustained tail.
-  for(let i=0;i<len;i++)samples[i]=(Math.random()*2-1)*.48;
-  const source=c.createBufferSource(),low=c.createBiquadFilter(),high=c.createBiquadFilter(),gain=c.createGain();
-  source.buffer=buffer;
-  high.type='highpass';high.frequency.value=85;
-  low.type='lowpass';low.Q.value=.4;
-  low.frequency.setValueAtTime(280,now);
-  low.frequency.exponentialRampToValueAtTime(1900,now+1.0);
-  low.frequency.exponentialRampToValueAtTime(440,now+2.5);
+  const c=audio,now=c.currentTime,duration=3.25;
+  const len=Math.floor(c.sampleRate*duration),buffer=c.createBuffer(1,len,c.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*.56;
+  const source=c.createBufferSource();source.buffer=buffer;
+  const high=c.createBiquadFilter();high.type='highpass';high.frequency.value=100;
+  const low=c.createBiquadFilter();low.type='lowpass';low.Q.value=.75;
+  low.frequency.setValueAtTime(230,now);
+  low.frequency.exponentialRampToValueAtTime(3200,now+1.3);
   low.frequency.exponentialRampToValueAtTime(180,now+duration);
+  const gain=c.createGain();
   gain.gain.setValueAtTime(.0001,now);
-  gain.gain.linearRampToValueAtTime(.52,now+.8);
-  gain.gain.setValueAtTime(.52,now+1.3);
+  gain.gain.linearRampToValueAtTime(.78,now+.95);
+  gain.gain.setValueAtTime(.78,now+1.55);
   gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
   source.connect(high);high.connect(low);low.connect(gain);gain.connect(c.destination);
   source.start(now);source.stop(now+duration);
@@ -332,7 +362,7 @@ function listen(){
  }catch(e){starting=false;scheduleRestart(id,550)}
 }
 if(!Recognition){btn.disabled=true;info('Speech recognition unavailable. Try Safari on your iPad.');return}
-btn.addEventListener('click',()=>{readySound();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
+btn.addEventListener('click',()=>{readySound();primeVoice();if(desired){stop();info('');return}if(magicRunning)return;desired=true;session++;heardParts=[];btn.classList.add('listening');btn.setAttribute('aria-label','Stop listening');info('');listen()});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&desired)stop()});
 })();
 </script></body></html>
